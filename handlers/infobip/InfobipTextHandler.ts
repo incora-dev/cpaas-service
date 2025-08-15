@@ -1,0 +1,87 @@
+import { TextMessage } from '../../types/message-types';
+import { BaseHandler } from '../BaseHandler';
+import axios, { AxiosInstance } from 'axios';
+
+export class InfobipTextHandler extends BaseHandler<TextMessage> {
+  type: TextMessage['type'] = 'text';
+  private client: AxiosInstance;
+
+  constructor(config: { baseUrl: string; apiKey: string }) {
+    super();
+    this.client = axios.create({
+      baseURL: config.baseUrl,
+      headers: {
+        'Authorization': `App ${config.apiKey}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    });
+  }
+
+  async send(message: TextMessage, channelId: string, to: string, from?: string): Promise<void> {
+    try {
+      let endpoint: string;
+      let payload: any;
+
+      switch (channelId) {
+        case 'sms':
+          endpoint = '/sms/2/text/advanced';
+          payload = {
+            messages: [
+              {
+                destinations: [{ to }],
+                from: from || 'InfoSMS',
+                text: message.text,
+              },
+            ],
+          };
+          break;
+
+        case 'whatsapp':
+          endpoint = '/whatsapp/1/message/text';
+          payload = {
+            from: from || process.env['INFOBIP_WHATSAPP_FROM'] || '447860088970',
+            to,
+            content: {
+              text: message.text,
+              previewLink: message.text.includes('http'),
+              urlOptions: {
+                removeProtocol: false
+              }
+            }
+          };
+          break;
+
+        case 'viber':
+          endpoint = '/viber/2/messages';
+          payload = {
+            messages: [
+              {
+                sender: from || process.env['INFOBIP_VIBER_FROM'] || 'IBSelfServe',
+                destinations: [{ to }],
+                content: {
+                  text: message.text,
+                  type: 'TEXT'
+                },
+                options: {
+                  label: 'TRANSACTIONAL',
+                  applySessionRate: false,
+                  toPrimaryDeviceOnly: false
+                }
+              },
+            ],
+          };
+          break;
+
+        default:
+          throw new Error(`Unsupported channel for text message: ${channelId}`);
+      }
+
+      const response = await this.client.post(endpoint, payload);
+      console.log(`[${channelId}] Infobip text message sent successfully:`, response.data);
+    } catch (error) {
+      console.error(`[${channelId}] Error sending Infobip text message:`, error);
+      throw error;
+    }
+  }
+}
