@@ -1,4 +1,4 @@
-export type MessageType = 'text' | 'image' | 'carousel' | 'video';
+export type MessageType = 'text' | 'image' | 'carousel' | 'video' | 'file';
 
 export interface Button {
   title: string;
@@ -44,3 +44,15 @@ export interface ViberVideoMessage extends BaseVideoMessage {
 }
 
 export type VideoMessage = BaseVideoMessage | ViberVideoMessage;
+
+export interface BaseFileMessage {
+  type: 'file';
+  mediaUrl: string;
+}
+
+export interface ViberFileMessage extends BaseFileMessage {
+  fileName: string;
+}
+
+export type FileMessage = BaseFileMessage | ViberFileMessage;
+

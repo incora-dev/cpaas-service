@@ -1,7 +1,7 @@
 import { InfobipProvider, InfobipConfig } from './providers/InfobipProvider';
 import { ProviderFactory, ProviderConfig } from './providers/ProviderFactory';
 // import { CarouselMessage, ImageMessage, TextMessage, VideoMessage } from './types/message-types';
-import { TextMessage, VideoMessage } from './types/message-types';
+import { TextMessage, FileMessage } from './types/message-types';
 
 main();
 
@@ -46,18 +46,27 @@ async function main() {
   //         {"title": "Share", "action": "https://images.unsplash.com/photo-1716467891152-1b43a96de578?q=80&w=2081&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
   //     ]
   // }] } as CarouselMessage, '380976115062');
+    // await infobipProvider.send('whatsapp', {
+    //   type: 'video',
+    //   mediaUrl: 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4',
+    //   caption: 'Hello WhatsApp!'
+    // } as VideoMessage, '380976115062');
+    // await infobipProvider.send('viber', {
+    //   type: 'video',
+    //   mediaUrl: 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4',
+    //   caption: 'Hello Viber!',
+    //   thumbnailUrl: 'https://cdn.britannica.com/34/235834-050-C5843610/two-different-breeds-of-cats-side-by-side-outdoors-in-the-garden.jpg',
+    //   duration: 'PT30S'
+    // } as VideoMessage, '380976115062');
     await infobipProvider.send('whatsapp', {
-      type: 'video',
-      mediaUrl: 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4',
-      caption: 'Hello WhatsApp!'
-    } as VideoMessage, '380976115062');
+      type: 'file',
+      mediaUrl: 'https://raw.githubusercontent.com/cyb70289/utf8/master/UTF-8-demo.txt',
+    } as FileMessage, '380976115062');
     await infobipProvider.send('viber', {
-      type: 'video',
-      mediaUrl: 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4',
-      caption: 'Hello Viber!',
-      thumbnailUrl: 'https://cdn.britannica.com/34/235834-050-C5843610/two-different-breeds-of-cats-side-by-side-outdoors-in-the-garden.jpg',
-      duration: 'PT30S'
-    } as VideoMessage, '380976115062');
+      type: 'file',
+      mediaUrl: 'https://raw.githubusercontent.com/cyb70289/utf8/master/UTF-8-demo.txt',
+      fileName: 'test.txt',
+    } as FileMessage, '380976115062');
 
     console.log('Provider-specific channel messages sent successfully!');
   } catch (error) {

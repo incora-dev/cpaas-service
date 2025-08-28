@@ -58,7 +58,18 @@ export interface ViberVideoContent extends BaseVideoContent {
 
 export type VideoContent = BaseVideoContent | ViberVideoContent;
 
-export type MessageContent = TextContent | ImageContent | TemplateContent | CardContent | CarouselContent | VideoContent;
+export interface BaseFileContent {
+  type: 'file';
+  mediaUrl: string;
+}
+
+export interface ViberFileContent extends BaseFileContent {
+  fileName: string;
+}
+
+export type FileContent = BaseFileContent | ViberFileContent;
+
+export type MessageContent = TextContent | ImageContent | TemplateContent | CardContent | CarouselContent | VideoContent | FileContent;
 
 export interface UnifiedMessage {
   provider: MessageProvider;
