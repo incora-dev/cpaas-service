@@ -1,4 +1,4 @@
-export type MessageType = 'text' | 'image' | 'carousel';
+export type MessageType = 'text' | 'image' | 'carousel' | 'video';
 
 export interface Button {
   title: string;
@@ -31,3 +31,16 @@ export interface CarouselMessage extends BaseMessage {
   type: 'carousel';
   items: CarouselItem[];
 }
+
+export interface BaseVideoMessage {
+  type: 'video';
+  mediaUrl: string;
+  caption?: string;
+}
+
+export interface ViberVideoMessage extends BaseVideoMessage {
+  thumbnailUrl: string;
+  duration: string;
+}
+
+export type VideoMessage = BaseVideoMessage | ViberVideoMessage;

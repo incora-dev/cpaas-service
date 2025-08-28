@@ -1,6 +1,5 @@
 import { BaseChannel } from '../BaseChannel';
-import { InfobipTextHandler, InfobipImageHandler, InfobipCarouselHandler } from '../../handlers/infobip';
-
+import { InfobipTextHandler, InfobipImageHandler, InfobipCarouselHandler, InfobipVideoHandler } from '../../handlers/infobip';
 export class InfobipViberChannel extends BaseChannel {
   id = 'viber';
   providerId = 'infobip';
@@ -10,5 +9,6 @@ export class InfobipViberChannel extends BaseChannel {
     this.registerHandler(new InfobipTextHandler(config));
     this.registerHandler(new InfobipImageHandler(config));
     this.registerHandler(new InfobipCarouselHandler(config));
+    this.registerHandler(new InfobipVideoHandler(config));
   }
 }

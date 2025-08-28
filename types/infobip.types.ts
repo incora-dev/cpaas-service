@@ -45,7 +45,20 @@ export interface CarouselContent extends BaseMessageContent {
   }>;
 }
 
-export type MessageContent = TextContent | ImageContent | TemplateContent | CardContent | CarouselContent;
+export interface BaseVideoContent extends BaseMessageContent {
+  type: 'video';
+  mediaUrl: string;
+  caption?: string;
+}
+
+export interface ViberVideoContent extends BaseVideoContent {
+  thumbnailUrl: string;
+  duration: string;
+}
+
+export type VideoContent = BaseVideoContent | ViberVideoContent;
+
+export type MessageContent = TextContent | ImageContent | TemplateContent | CardContent | CarouselContent | VideoContent;
 
 export interface UnifiedMessage {
   provider: MessageProvider;
