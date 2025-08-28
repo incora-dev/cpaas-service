@@ -1,7 +1,7 @@
 import { InfobipProvider, InfobipConfig } from './providers/InfobipProvider';
 import { ProviderFactory, ProviderConfig } from './providers/ProviderFactory';
-// import { CarouselMessage, ImageMessage, TextMessage, VideoMessage } from './types/message-types';
-import { TextMessage, FileMessage } from './types/message-types';
+// import { CarouselMessage, ImageMessage, TextMessage, VideoMessage, FileMessage } from './types/message-types';
+import { TextMessage, ListMessage } from './types/message-types';
 
 main();
 
@@ -58,15 +58,17 @@ async function main() {
     //   thumbnailUrl: 'https://cdn.britannica.com/34/235834-050-C5843610/two-different-breeds-of-cats-side-by-side-outdoors-in-the-garden.jpg',
     //   duration: 'PT30S'
     // } as VideoMessage, '380976115062');
-    await infobipProvider.send('whatsapp', {
-      type: 'file',
-      mediaUrl: 'https://raw.githubusercontent.com/cyb70289/utf8/master/UTF-8-demo.txt',
-    } as FileMessage, '380976115062');
-    await infobipProvider.send('viber', {
-      type: 'file',
-      mediaUrl: 'https://raw.githubusercontent.com/cyb70289/utf8/master/UTF-8-demo.txt',
-      fileName: 'test.txt',
-    } as FileMessage, '380976115062');
+    // await infobipProvider.send('whatsapp', {
+    //   type: 'file',
+    //   mediaUrl: 'https://raw.githubusercontent.com/cyb70289/utf8/master/UTF-8-demo.txt',
+    // } as FileMessage, '380976115062');
+    // await infobipProvider.send('viber', {
+    //   type: 'file',
+    //   mediaUrl: 'https://raw.githubusercontent.com/cyb70289/utf8/master/UTF-8-demo.txt',
+    //   fileName: 'test.txt',
+    // } as FileMessage, '380976115062');
+    await infobipProvider.send('viber', { type: 'list', text: 'Choose one:', options: ['Option 1', 'Option 2', 'Option 3'], } as ListMessage, '380976115062');
+
 
     console.log('Provider-specific channel messages sent successfully!');
   } catch (error) {
