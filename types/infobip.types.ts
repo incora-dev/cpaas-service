@@ -100,6 +100,12 @@ export interface AudioContent extends BaseMessageContent {
   messageId?: string;
 }
 
+export interface StickerContent extends BaseMessageContent {
+  type: 'sticker';
+  mediaUrl: string;
+  messageId?: string;
+}
+
 export type MessageContent =
   | TextContent
   | ImageContent

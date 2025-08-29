@@ -1,4 +1,4 @@
-export type MessageType = 'text' | 'image' | 'carousel' | 'video' | 'file' | 'list' | 'audio';
+export type MessageType = 'text' | 'image' | 'carousel' | 'video' | 'file' | 'list' | 'audio' | 'sticker';
 
 export interface Button {
   title: string;
@@ -33,7 +33,7 @@ export interface CarouselMessage extends BaseMessage {
 }
 
 export interface BaseVideoMessage extends BaseMessage {
-  type: "video";
+  type: 'video';
   mediaUrl: string;
   caption?: string;
 }
@@ -46,7 +46,7 @@ export interface ViberVideoMessage extends BaseVideoMessage {
 export type VideoMessage = BaseVideoMessage | ViberVideoMessage;
 
 export interface BaseFileMessage extends BaseMessage {
-  type: "file";
+  type: 'file';
   mediaUrl: string;
 }
 
@@ -57,7 +57,7 @@ export interface ViberFileMessage extends BaseFileMessage {
 export type FileMessage = BaseFileMessage | ViberFileMessage;
 
 export interface BaseListMessage extends BaseMessage {
-  type: "list";
+  type: 'list';
   text: string;
   options: string[];
 }
@@ -82,9 +82,15 @@ export interface WhatsAppListMessage extends BaseListMessage {
 export type ListMessage = BaseListMessage | WhatsAppListMessage;
 
 export interface AudioMessage extends BaseMessage {
-  type: "audio";
+  type: 'audio';
   mediaUrl: string; 
   messageId?: string; 
+}
+
+export interface StickerMessage extends BaseMessage {
+  type: 'sticker';
+  mediaUrl: string;
+  messageId?: string;
 }
 
 

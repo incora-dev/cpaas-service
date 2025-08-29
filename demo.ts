@@ -1,7 +1,7 @@
 import { InfobipProvider, InfobipConfig } from './providers/InfobipProvider';
 import { ProviderFactory, ProviderConfig } from './providers/ProviderFactory';
-// import { CarouselMessage, ImageMessage, TextMessage, VideoMessage, FileMessage, ListMessage } from './types/message-types';
-import { TextMessage, AudioMessage } from './types/message-types';
+// import { CarouselMessage, ImageMessage, TextMessage, VideoMessage, FileMessage, ListMessage, AudioMessage } from './types/message-types';
+import { TextMessage, StickerMessage } from './types/message-types';
 
 main();
 
@@ -19,33 +19,33 @@ async function main() {
     // await infobipProvider.send('whatsapp', { type: 'text', text: 'Hello from Infobip WhatsApp' } as TextMessage, '380976115062');
     // await infobipProvider.send('viber', { type: 'image', mediaUrl: 'https://cdn.britannica.com/34/235834-050-C5843610/two-different-breeds-of-cats-side-by-side-outdoors-in-the-garden.jpg', caption: 'Nice cats' } as ImageMessage, '380976115062');
     // await infobipProvider.send('whatsapp', { type: 'image', mediaUrl: 'https://cdn.britannica.com/34/235834-050-C5843610/two-different-breeds-of-cats-side-by-side-outdoors-in-the-garden.jpg', caption: 'Nice cats' } as ImageMessage, '380976115062');
-  //   await infobipProvider.send('viber', { type: 'carousel', items: [{
-  //     "title": "Cat 1",
-  //     "description": "Beautiful cat 1",
-  //     "mediaUrl": "https://images.unsplash.com/photo-1578680632090-5933d7784c7b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  //     "buttons": [
-  //         {"title": "Like", "action": "https://images.unsplash.com/photo-1578680632090-5933d7784c7b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
-  //         {"title": "Share", "action": "https://images.unsplash.com/photo-1578680632090-5933d7784c7b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
-  //     ]
-  // },
-  // {
-  //     "title": "Cat 2",
-  //     "description": "Beautiful cat 2",
-  //     "mediaUrl": "https://images.unsplash.com/photo-1558011958-c3bc18a2e393?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  //     "buttons": [
-  //         {"title": "Like", "action": "https://images.unsplash.com/photo-1558011958-c3bc18a2e393?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
-  //         {"title": "Share", "action": "https://images.unsplash.com/photo-1558011958-c3bc18a2e393?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
-  //     ]
-  // },
-  // {
-  //     "title": "Cat 3",
-  //     "description": "Beautiful cat 3",
-  //     "mediaUrl": "https://images.unsplash.com/photo-1716467891152-1b43a96de578?q=80&w=2081&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  //     "buttons": [
-  //         {"title": "Like", "action": "https://images.unsplash.com/photo-1716467891152-1b43a96de578?q=80&w=2081&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
-  //         {"title": "Share", "action": "https://images.unsplash.com/photo-1716467891152-1b43a96de578?q=80&w=2081&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
-  //     ]
-  // }] } as CarouselMessage, '380976115062');
+    // await infobipProvider.send('viber', { type: 'carousel', items: [{
+    //   "title": "Cat 1",
+    //   "description": "Beautiful cat 1",
+    //   "mediaUrl": "https://images.unsplash.com/photo-1578680632090-5933d7784c7b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    //   "buttons": [
+    //     {"title": "Like", "action": "https://images.unsplash.com/photo-1578680632090-5933d7784c7b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
+    //       {"title": "Share", "action": "https://images.unsplash.com/photo-1578680632090-5933d7784c7b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
+    //   ]
+    // },
+    // {
+    //   "title": "Cat 2",
+    //   "description": "Beautiful cat 2",
+    //   "mediaUrl": "https://images.unsplash.com/photo-1558011958-c3bc18a2e393?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    //   "buttons": [
+    //     {"title": "Like", "action": "https://images.unsplash.com/photo-1558011958-c3bc18a2e393?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
+    //     {"title": "Share", "action": "https://images.unsplash.com/photo-1558011958-c3bc18a2e393?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
+    //    ]
+    // },
+    // {
+    //   "title": "Cat 3",
+    //   "description": "Beautiful cat 3",
+    //   "mediaUrl": "https://images.unsplash.com/photo-1716467891152-1b43a96de578?q=80&w=2081&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    //   "buttons": [
+    //     {"title": "Like", "action": "https://images.unsplash.com/photo-1716467891152-1b43a96de578?q=80&w=2081&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
+    //     {"title": "Share", "action": "https://images.unsplash.com/photo-1716467891152-1b43a96de578?q=80&w=2081&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
+    //   ]
+    // }] } as CarouselMessage, '380976115062');
     // await infobipProvider.send('whatsapp', {
     //   type: 'video',
     //   mediaUrl: 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4',
@@ -88,15 +88,25 @@ async function main() {
     //   } as ListMessage,
     //   "380976115062"
     // );
-    await infobipProvider.send(
-      "whatsapp",
-      {
-        type: "audio",
-        mediaUrl: "https://samplelib.com/lib/preview/mp4/sample-5s.mp4",
-        messageId: "123e4567-e89b-12d3-a456-426614174000",
-      } as AudioMessage,
-      "380976115062"
-    );
+    // await infobipProvider.send(
+    //   "whatsapp",
+    //   {
+    //     type: "audio",
+    //     mediaUrl: "https://samplelib.com/lib/preview/mp4/sample-5s.mp4",
+    //     messageId: "123e4567-e89b-12d3-a456-426614174000",
+    //   } as AudioMessage,
+    //   "380976115062"
+    // );
+        await infobipProvider.send(
+          "whatsapp",
+          {
+            type: "sticker",
+            mediaUrl:
+              "https://cdn.promptden.com/images/528b3840-0144-4e95-ad94-45f14754ad0e.webp",
+            messageId: "123e4567-e89b-12d3-a456-426614174000",
+          } as StickerMessage,
+          "380976115062"
+        );
 
 
 
