@@ -1,9 +1,9 @@
-import { StickerMessage } from "../../types/message-types";
+import { LocationMessage } from "../../types/message-types";
 import { BaseHandler } from "../BaseHandler";
 import axios, { AxiosInstance } from "axios";
 
-export class InfobipStickerHandler extends BaseHandler<StickerMessage> {
-  type: StickerMessage["type"] = "sticker";
+export class InfobipLocationHandler extends BaseHandler<LocationMessage> {
+  type: LocationMessage["type"] = "location";
   private client: AxiosInstance;
 
   constructor(config: { baseUrl: string; apiKey: string }) {
@@ -19,7 +19,7 @@ export class InfobipStickerHandler extends BaseHandler<StickerMessage> {
   }
 
   async send(
-    message: StickerMessage,
+    message: LocationMessage,
     channelId: string,
     to: string,
     from?: string
@@ -30,12 +30,17 @@ export class InfobipStickerHandler extends BaseHandler<StickerMessage> {
 
       switch (channelId) {
         case "whatsapp":
-          endpoint = "/whatsapp/1/message/sticker";
+          endpoint = "/whatsapp/1/message/location";
           payload = {
             from:
               from || process.env["INFOBIP_WHATSAPP_FROM"] || "447860088970",
             to,
-            content: { mediaUrl: message.mediaUrl },
+            content: {
+              latitude: message.latitude,
+              longitude: message.longitude,
+              name: message.name,
+              address: message.address,
+            },
             callbackData: "Callback data",
             notifyUrl: "https://www.example.com/whatsapp",
           };
@@ -43,18 +48,18 @@ export class InfobipStickerHandler extends BaseHandler<StickerMessage> {
 
         default:
           throw new Error(
-            `Unsupported channel for sticker message: ${channelId}`
+            `Unsupported channel for location message: ${channelId}`
           );
       }
 
       const response = await this.client.post(endpoint, payload);
       console.log(
-        `[${channelId}] Infobip sticker message sent successfully:`,
+        `[${channelId}] Infobip location message sent successfully:`,
         response.data
       );
     } catch (error: any) {
       console.error(
-        `[${channelId}] Error sending Infobip sticker message:`,
+        `[${channelId}] Error sending Infobip location message:`,
         error
       );
       throw error;

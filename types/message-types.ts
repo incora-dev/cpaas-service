@@ -1,4 +1,4 @@
-export type MessageType = 'text' | 'image' | 'carousel' | 'video' | 'file' | 'list' | 'audio' | 'sticker' | 'otp';
+export type MessageType = 'text' | 'image' | 'carousel' | 'video' | 'file' | 'list' | 'audio' | 'sticker' | 'otp' | 'location';
 
 export interface Button {
   title: string;
@@ -83,21 +83,18 @@ export interface WhatsAppListSection {
 export interface WhatsAppListMessage extends BaseListMessage {
   actionTitle: string; // Button name
   sections: WhatsAppListSection[];
-  messageId?: string;
 }
 
 export type ListMessage = ViberListMessage | WhatsAppListMessage;
 
 export interface AudioMessage extends BaseMessage {
   type: 'audio';
-  mediaUrl: string; 
-  messageId?: string; 
+  mediaUrl: string;
 }
 
 export interface StickerMessage extends BaseMessage {
   type: 'sticker';
   mediaUrl: string;
-  messageId?: string;
 }
 
 export interface OtpMessage extends BaseMessage {
@@ -105,6 +102,14 @@ export interface OtpMessage extends BaseMessage {
   templateId: string; 
   parameters: Record<string, string>; 
   language?: string; 
+}
+
+export interface LocationMessage extends BaseMessage {
+  type: "location";
+  latitude: number;
+  longitude: number;
+  name?: string;
+  address?: string;
 }
 
 

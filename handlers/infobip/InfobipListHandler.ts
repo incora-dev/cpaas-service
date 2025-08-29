@@ -55,7 +55,6 @@ export class InfobipListHandler extends BaseHandler<ListMessage> {
             from:
               from || process.env["INFOBIP_WHATSAPP_FROM"] || "447860088970",
             to,
-            messageId: whatsappMessage.messageId || undefined,
             content: {
               body: {
                 text: whatsappMessage.text,

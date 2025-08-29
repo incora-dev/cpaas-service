@@ -1,7 +1,7 @@
 import { InfobipProvider, InfobipConfig } from './providers/InfobipProvider';
 import { ProviderFactory, ProviderConfig } from './providers/ProviderFactory';
-// import { CarouselMessage, ImageMessage, TextMessage, VideoMessage, FileMessage, ListMessage, AudioMessage, StickerMessage } from './types/message-types';
-import { TextMessage, OtpMessage } from './types/message-types';
+// import { CarouselMessage, ImageMessage, TextMessage, VideoMessage, FileMessage, ListMessage, AudioMessage, StickerMessage, OtpMessage } from './types/message-types';
+import { TextMessage, LocationMessage } from './types/message-types';
 
 main();
 
@@ -107,19 +107,30 @@ async function main() {
     //       } as StickerMessage,
     //       "380976115062"
     //     );
-    await infobipProvider.send(
-      "viber",
-      {
-        type: "otp",
-        templateId: "426614174000",
-        parameters: {
-          code: "123456",
-          expiry: "5 minutes",
-        },
-        language: "ENGLISH",
-      } as OtpMessage,
-      "380976115062"
-    );
+    // await infobipProvider.send(
+    //   "viber",
+    //   {
+    //     type: "otp",
+    //     templateId: "426614174000",
+    //     parameters: {
+    //       code: "123456",
+    //       expiry: "5 minutes",
+    //     },
+    //     language: "ENGLISH",
+    //   } as OtpMessage,
+    //   "380976115062"
+    // );
+   await infobipProvider.send(
+     "whatsapp",
+     {
+       type: "location",
+       latitude: 44.9526862,
+       longitude: 13.8545217,
+       name: "Seaside Park",
+       address: "123 Ocean Drive, Dubrovnik, Croatia",
+     } as LocationMessage,
+     "380976115062"
+   );
 
     console.log("Provider-specific channel messages sent successfully!");
   } catch (error) {

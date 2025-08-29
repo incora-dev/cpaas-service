@@ -96,7 +96,6 @@ export interface WhatsAppListSection {
 export interface WhatsAppListContent extends BaseListContent {
   actionTitle: string;
   sections: WhatsAppListSection[];
-  messageId?: string;
 }
 
 export type ListContent = ViberListContent | WhatsAppListContent;
@@ -104,13 +103,11 @@ export type ListContent = ViberListContent | WhatsAppListContent;
 export interface AudioContent extends BaseMessageContent {
   type: 'audio';
   mediaUrl: string;
-  messageId?: string;
 }
 
 export interface StickerContent extends BaseMessageContent {
   type: 'sticker';
   mediaUrl: string;
-  messageId?: string;
 }
 
 export interface OtpContent extends BaseMessageContent {
@@ -118,6 +115,14 @@ export interface OtpContent extends BaseMessageContent {
   templateId: string;
   parameters: Record<string, string>;
   language?: string;
+}
+
+export interface LocationContent extends BaseMessageContent {
+  type: "location";
+  latitude: number;
+  longitude: number;
+  name?: string;
+  address?: string;
 }
 
 export type MessageContent =
@@ -130,7 +135,8 @@ export type MessageContent =
   | FileContent
   | ListContent
   | AudioContent
-  | OtpContent;
+  | OtpContent
+  | LocationContent;
 
 export interface UnifiedMessage {
   provider: MessageProvider;
