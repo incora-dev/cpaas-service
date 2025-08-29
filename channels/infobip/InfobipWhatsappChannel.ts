@@ -8,6 +8,7 @@ import {
   InfobipAudioHandler,
   InfobipStickerHandler,
   InfobipLocationHandler,
+  InfobipContactHandler,
 } from "../../handlers/infobip";
 
 export class InfobipWhatsappChannel extends BaseChannel {
@@ -24,5 +25,6 @@ export class InfobipWhatsappChannel extends BaseChannel {
     this.registerHandler(new InfobipAudioHandler(config));
     this.registerHandler(new InfobipStickerHandler(config));
     this.registerHandler(new InfobipLocationHandler(config));
+    this.registerHandler(new InfobipContactHandler(config));
   }
 }

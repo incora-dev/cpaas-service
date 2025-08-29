@@ -1,4 +1,4 @@
-export type MessageType = 'text' | 'image' | 'carousel' | 'video' | 'file' | 'list' | 'audio' | 'sticker' | 'otp' | 'location';
+export type MessageType = 'text' | 'image' | 'carousel' | 'video' | 'file' | 'list' | 'audio' | 'sticker' | 'otp' | 'location' | 'contact';
 
 export interface Button {
   title: string;
@@ -98,10 +98,43 @@ export interface StickerMessage extends BaseMessage {
 }
 
 export interface OtpMessage extends BaseMessage {
-  type: 'otp';
-  templateId: string; 
-  parameters: Record<string, string>; 
-  language?: string; 
+  type: "otp";
+  templateId: string;
+  parameters: Record<string, string>;
+  language?:
+    | "ENGLISH"
+    | "ARABIC"
+    | "BULGARIAN"
+    | "CROATIAN"
+    | "CZECH"
+    | "DANISH"
+    | "GERMAN"
+    | "GREEK"
+    | "SPANISH"
+    | "FINNISH"
+    | "FRENCH"
+    | "HEBREW"
+    | "BURMESE"
+    | "HUNGARIAN"
+    | "INDONESIAN"
+    | "ITALIAN"
+    | "JAPANESE"
+    | "NORWEGIAN"
+    | "DUTCH"
+    | "POLISH"
+    | "PORTUGUESE_PORTUGAL"
+    | "PORTUGUESE_BRAZIL"
+    | "ROMANIAN"
+    | "RUSSIAN"
+    | "SLOVAK"
+    | "SERBIAN"
+    | "SWEDISH"
+    | "THAI"
+    | "TURKISH"
+    | "UKRAINIAN"
+    | "VIETNAMESE"
+    | "PERSIAN"
+    | "BELARUSIAN";
 }
 
 export interface LocationMessage extends BaseMessage {
@@ -111,6 +144,67 @@ export interface LocationMessage extends BaseMessage {
   name?: string;
   address?: string;
 }
+
+export interface ContactAddress {
+  street?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  country?: string;
+  countryCode?: string;
+  type?: "HOME" | "WORK";
+}
+
+export interface ContactEmail {
+  email: string;
+  type?: "HOME" | "WORK";
+}
+
+export interface ContactName {
+  firstName: string;
+  formattedName: string;
+  lastName?: string;
+  middleName?: string;
+  nameSuffix?: string;
+  namePrefix?: string;
+}
+
+export interface ContactOrg {
+  company?: string;
+  department?: string;
+  title?: string;
+}
+
+export interface ContactPhone {
+  phone: string;
+  type?: "CELL" | "MAIN" | "IPHONE" | "HOME" | "WORK";
+  waId?: string;
+}
+
+export interface ContactUrl {
+  url: string;
+  type?: "HOME" | "WORK";
+}
+
+export interface Contact {
+  addresses?: ContactAddress[];
+  birthday?: string; // YYYY-MM-DD
+  emails?: ContactEmail[];
+  name: ContactName;
+  org?: ContactOrg;
+  phones?: ContactPhone[];
+  urls?: ContactUrl[];
+}
+
+export interface ContactMessage extends BaseMessage {
+  type: "contact";
+  contacts: Contact[];
+  callbackData?: string;
+  notifyUrl?: string;
+  entityId?: string;
+  applicationId?: string;
+}
+
 
 
 

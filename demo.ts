@@ -1,7 +1,7 @@
 import { InfobipProvider, InfobipConfig } from './providers/InfobipProvider';
 import { ProviderFactory, ProviderConfig } from './providers/ProviderFactory';
-// import { CarouselMessage, ImageMessage, TextMessage, VideoMessage, FileMessage, ListMessage, AudioMessage, StickerMessage, OtpMessage } from './types/message-types';
-import { TextMessage, LocationMessage } from './types/message-types';
+// import { CarouselMessage, ImageMessage, TextMessage, VideoMessage, FileMessage, ListMessage, AudioMessage, StickerMessage, OtpMessage, LocationMessage } from './types/message-types';
+import { TextMessage, ContactMessage } from './types/message-types';
 
 main();
 
@@ -120,17 +120,93 @@ async function main() {
     //   } as OtpMessage,
     //   "380976115062"
     // );
-   await infobipProvider.send(
-     "whatsapp",
-     {
-       type: "location",
-       latitude: 44.9526862,
-       longitude: 13.8545217,
-       name: "Seaside Park",
-       address: "123 Ocean Drive, Dubrovnik, Croatia",
-     } as LocationMessage,
-     "380976115062"
-   );
+  //  await infobipProvider.send(
+  //    "whatsapp",
+  //    {
+  //      type: "location",
+  //      latitude: 44.9526862,
+  //      longitude: 13.8545217,
+  //      name: "Seaside Park",
+  //      address: "123 Ocean Drive, Dubrovnik, Croatia",
+  //    } as LocationMessage,
+  //    "380976115062"
+    //  );
+    await infobipProvider.send(
+      "whatsapp",
+      {
+        type: "contact",
+        contacts: [
+          {
+            addresses: [
+              {
+                street: "Istarska",
+                city: "Vodnjan",
+                zip: "52215",
+                country: "Croatia",
+                countryCode: "HR",
+                type: "WORK",
+              },
+              {
+                street: "Istarska",
+                city: "Vodnjan",
+                zip: "52215",
+                country: "Croatia",
+                countryCode: "HR",
+                type: "HOME",
+              },
+            ],
+            birthday: "2010-01-01",
+            emails: [
+              {
+                email: "John.Smith@example.com",
+                type: "WORK",
+              },
+              {
+                email: "John.Smith.priv@example.com",
+                type: "HOME",
+              },
+            ],
+            name: {
+              firstName: "John",
+              lastName: "Smith",
+              middleName: "B",
+              namePrefix: "Mr.",
+              formattedName: "Mr. John Smith",
+            },
+            org: {
+              company: "Company Name",
+              department: "Department",
+              title: "Director",
+            },
+            phones: [
+              {
+                phone: "+441134960019",
+                type: "HOME",
+                waId: "441134960019",
+              },
+              {
+                phone: "+441134960000",
+                type: "WORK",
+                waId: "441134960000",
+              },
+            ],
+            urls: [
+              {
+                url: "http://example.com/John.Smith",
+                type: "WORK",
+              },
+              {
+                url: "http://example.com/home/John.Smith",
+                type: "HOME",
+              },
+            ],
+          },
+        ],
+        callbackData: "Callback data",
+        notifyUrl: "https://www.example.com/whatsapp",
+      } as ContactMessage,
+      "380976115062"
+    );
 
     console.log("Provider-specific channel messages sent successfully!");
   } catch (error) {

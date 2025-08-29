@@ -114,7 +114,40 @@ export interface OtpContent extends BaseMessageContent {
   type: "otp";
   templateId: string;
   parameters: Record<string, string>;
-  language?: string;
+  language?:
+    | "ENGLISH"
+    | "ARABIC"
+    | "BULGARIAN"
+    | "CROATIAN"
+    | "CZECH"
+    | "DANISH"
+    | "GERMAN"
+    | "GREEK"
+    | "SPANISH"
+    | "FINNISH"
+    | "FRENCH"
+    | "HEBREW"
+    | "BURMESE"
+    | "HUNGARIAN"
+    | "INDONESIAN"
+    | "ITALIAN"
+    | "JAPANESE"
+    | "NORWEGIAN"
+    | "DUTCH"
+    | "POLISH"
+    | "PORTUGUESE_PORTUGAL"
+    | "PORTUGUESE_BRAZIL"
+    | "ROMANIAN"
+    | "RUSSIAN"
+    | "SLOVAK"
+    | "SERBIAN"
+    | "SWEDISH"
+    | "THAI"
+    | "TURKISH"
+    | "UKRAINIAN"
+    | "VIETNAMESE"
+    | "PERSIAN"
+    | "BELARUSIAN";
 }
 
 export interface LocationContent extends BaseMessageContent {
@@ -123,6 +156,62 @@ export interface LocationContent extends BaseMessageContent {
   longitude: number;
   name?: string;
   address?: string;
+}
+
+export interface ContactAddress {
+  street?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  country?: string;
+  countryCode?: string;
+  type?: "HOME" | "WORK";
+}
+
+export interface ContactEmail {
+  email: string;
+  type?: "HOME" | "WORK";
+}
+
+export interface ContactName {
+  firstName: string;
+  formattedName: string;
+  lastName?: string;
+  middleName?: string;
+  nameSuffix?: string;
+  namePrefix?: string;
+}
+
+export interface ContactOrg {
+  company?: string;
+  department?: string;
+  title?: string;
+}
+
+export interface ContactPhone {
+  phone: string;
+  type?: "CELL" | "MAIN" | "IPHONE" | "HOME" | "WORK";
+  waId?: string;
+}
+
+export interface ContactUrl {
+  url: string;
+  type?: "HOME" | "WORK";
+}
+
+export interface Contact {
+  addresses?: ContactAddress[];
+  birthday?: string; 
+  emails?: ContactEmail[];
+  name: ContactName;
+  org?: ContactOrg;
+  phones?: ContactPhone[];
+  urls?: ContactUrl[];
+}
+
+export interface ContactContent extends BaseMessageContent {
+  type: "contact";
+  contacts: Contact[];
 }
 
 export type MessageContent =
@@ -136,7 +225,8 @@ export type MessageContent =
   | ListContent
   | AudioContent
   | OtpContent
-  | LocationContent;
+  | LocationContent
+  | ContactContent;
 
 export interface UnifiedMessage {
   provider: MessageProvider;

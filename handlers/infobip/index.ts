@@ -7,4 +7,5 @@ export { InfobipListHandler } from './InfobipListHandler';
 export { InfobipAudioHandler } from './InfobipAudioHandler';
 export { InfobipStickerHandler } from './InfobipStickerHandler';
 export { InfobipOtpHandler } from './InfobipOtpHandler';
-export { InfobipLocationHandler } from './InfobipLocationHandler'
+export { InfobipLocationHandler } from './InfobipLocationHandler';
+export { InfobipContactHandler } from './InfobipContactHandler'
