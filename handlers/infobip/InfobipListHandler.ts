@@ -1,4 +1,4 @@
-import { ListMessage } from '../../types/message-types';
+import { ListMessage, WhatsAppListMessage } from '../../types/message-types';
 import { BaseHandler } from '../BaseHandler';
 import axios, { AxiosInstance } from 'axios';
 
@@ -45,6 +45,34 @@ export class InfobipListHandler extends BaseHandler<ListMessage> {
             ]
           };
           break;
+
+        case 'whatsapp':
+          endpoint = '/whatsapp/1/message/interactive/list';
+          const whatsappMessage = message as WhatsAppListMessage;
+          payload = {
+            from:
+              from || process.env["INFOBIP_WHATSAPP_FROM"] || "447860088970",
+            to,
+            messageId: whatsappMessage.messageId || undefined,
+            content: {
+              body: {
+                text: whatsappMessage.text,
+              },
+              action: {
+                title: whatsappMessage.actionTitle || "Choose one",
+                sections: whatsappMessage.sections,
+              },
+            },
+            callbackData: "Callback data",
+            notifyUrl: "https://www.example.com/whatsapp",
+            urlOptions: {
+              shortenUrl: true,
+              trackClicks: true,
+              trackingUrl: "https://example.com/click-report",
+              removeProtocol: true,
+            },
+          };
+        break;
 
         default:
           throw new Error(`Unsupported channel for list message: ${channelId}`);

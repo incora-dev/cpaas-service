@@ -68,14 +68,32 @@ async function main() {
     //   fileName: 'test.txt',
     // } as FileMessage, '380976115062');
     await infobipProvider.send('viber', { type: 'list', text: 'Choose one:', options: ['Option 1', 'Option 2', 'Option 3'], } as ListMessage, '380976115062');
+    await infobipProvider.send(
+      "whatsapp",
+      {
+        type: "list",
+        text: "Choose one:",
+        actionTitle: "Pick option",
+        sections: [
+          {
+            title: "Available options",
+            rows: [
+              { id: "1", title: "Option 1" },
+              { id: "2", title: "Option 2" },
+              { id: "3", title: "Option 3" },
+            ],
+          },
+        ],
+        messageId: "123e4567-e89b-12d3-a456-426614174000",
+      } as ListMessage,
+      "380976115062"
+    );
 
 
     console.log('Provider-specific channel messages sent successfully!');
   } catch (error) {
     console.error('Error with provider-specific channels:', error);
   }
-
-
 
   const providerConfig: ProviderConfig = {
     infobip: infobipConfig

@@ -56,9 +56,29 @@ export interface ViberFileMessage extends BaseFileMessage {
 
 export type FileMessage = BaseFileMessage | ViberFileMessage;
 
-export interface ListMessage {
+export interface BaseListMessage {
   type: 'list';
   text: string;        
   options: string[];
 }
+
+export interface WhatsAppListRow {
+  id: string;
+  title: string;
+  description?: string;
+}
+
+export interface WhatsAppListSection {
+  title?: string;
+  rows: WhatsAppListRow[];
+}
+
+export interface WhatsAppListMessage extends BaseListMessage {
+  actionTitle: string; // Button name
+  sections: WhatsAppListSection[];
+  messageId?: string;
+}
+
+export type ListMessage = BaseListMessage | WhatsAppListMessage;
+
 
