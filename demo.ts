@@ -1,7 +1,7 @@
 import { InfobipProvider, InfobipConfig } from './providers/InfobipProvider';
 import { ProviderFactory, ProviderConfig } from './providers/ProviderFactory';
-// import { CarouselMessage, ImageMessage, TextMessage, VideoMessage, FileMessage } from './types/message-types';
-import { TextMessage, ListMessage } from './types/message-types';
+// import { CarouselMessage, ImageMessage, TextMessage, VideoMessage, FileMessage, ListMessage } from './types/message-types';
+import { TextMessage, AudioMessage } from './types/message-types';
 
 main();
 
@@ -67,27 +67,37 @@ async function main() {
     //   mediaUrl: 'https://raw.githubusercontent.com/cyb70289/utf8/master/UTF-8-demo.txt',
     //   fileName: 'test.txt',
     // } as FileMessage, '380976115062');
-    await infobipProvider.send('viber', { type: 'list', text: 'Choose one:', options: ['Option 1', 'Option 2', 'Option 3'], } as ListMessage, '380976115062');
+    // await infobipProvider.send('viber', { type: 'list', text: 'Choose one:', options: ['Option 1', 'Option 2', 'Option 3'], } as ListMessage, '380976115062');
+    // await infobipProvider.send(
+    //   "whatsapp",
+    //   {
+    //     type: "list",
+    //     text: "Choose one:",
+    //     actionTitle: "Pick option",
+    //     sections: [
+    //       {
+    //         title: "Available options",
+    //         rows: [
+    //           { id: "1", title: "Option 1" },
+    //           { id: "2", title: "Option 2" },
+    //           { id: "3", title: "Option 3" },
+    //         ],
+    //       },
+    //     ],
+    //     messageId: "123e4567-e89b-12d3-a456-426614174000",
+    //   } as ListMessage,
+    //   "380976115062"
+    // );
     await infobipProvider.send(
       "whatsapp",
       {
-        type: "list",
-        text: "Choose one:",
-        actionTitle: "Pick option",
-        sections: [
-          {
-            title: "Available options",
-            rows: [
-              { id: "1", title: "Option 1" },
-              { id: "2", title: "Option 2" },
-              { id: "3", title: "Option 3" },
-            ],
-          },
-        ],
+        type: "audio",
+        mediaUrl: "https://samplelib.com/lib/preview/mp4/sample-5s.mp4",
         messageId: "123e4567-e89b-12d3-a456-426614174000",
-      } as ListMessage,
+      } as AudioMessage,
       "380976115062"
     );
+
 
 
     console.log('Provider-specific channel messages sent successfully!');

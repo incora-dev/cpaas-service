@@ -1,5 +1,12 @@
 import { BaseChannel } from '../BaseChannel';
-import { InfobipTextHandler, InfobipImageHandler, InfobipVideoHandler, InfobipFileHandler, InfobipListHandler } from '../../handlers/infobip';
+import {
+  InfobipTextHandler,
+  InfobipImageHandler,
+  InfobipVideoHandler,
+  InfobipFileHandler,
+  InfobipListHandler,
+  InfobipAudioHandler,
+} from "../../handlers/infobip";
 
 export class InfobipWhatsappChannel extends BaseChannel {
   id = 'whatsapp';
@@ -12,6 +19,6 @@ export class InfobipWhatsappChannel extends BaseChannel {
     this.registerHandler(new InfobipVideoHandler(config));
     this.registerHandler(new InfobipFileHandler(config));
     this.registerHandler(new InfobipListHandler(config));
-
+    this.registerHandler(new InfobipAudioHandler(config));
   }
 }

@@ -59,7 +59,7 @@ export interface ViberVideoContent extends BaseVideoContent {
 export type VideoContent = BaseVideoContent | ViberVideoContent;
 
 export interface BaseFileContent extends BaseMessageContent {
-  type: "file";
+  type: 'file';
   mediaUrl: string;
 }
 
@@ -70,7 +70,7 @@ export interface ViberFileContent extends BaseFileContent {
 export type FileContent = BaseFileContent | ViberFileContent;
 
 export interface BaseListContent extends BaseMessageContent {
-  type: "list";
+  type: 'list';
   text: string;
   options: string[];
 }
@@ -94,7 +94,22 @@ export interface WhatsAppListContent extends BaseListContent {
 
 export type ListContent = BaseListContent | WhatsAppListContent;
 
-export type MessageContent = TextContent | ImageContent | TemplateContent | CardContent | CarouselContent | VideoContent | FileContent | ListContent;
+export interface AudioContent extends BaseMessageContent {
+  type: 'audio';
+  mediaUrl: string;
+  messageId?: string;
+}
+
+export type MessageContent =
+  | TextContent
+  | ImageContent
+  | TemplateContent
+  | CardContent
+  | CarouselContent
+  | VideoContent
+  | FileContent
+  | ListContent
+  | AudioContent;
 
 export interface UnifiedMessage {
   provider: MessageProvider;
