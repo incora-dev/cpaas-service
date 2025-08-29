@@ -1,22 +1,8 @@
 import { ContactMessage } from "../../types/message-types";
 import { BaseHandler } from "../BaseHandler";
-import axios, { AxiosInstance } from "axios";
 
 export class InfobipContactHandler extends BaseHandler<ContactMessage> {
   type: ContactMessage["type"] = "contact";
-  private client: AxiosInstance;
-
-  constructor(config: { baseUrl: string; apiKey: string }) {
-    super();
-    this.client = axios.create({
-      baseURL: config.baseUrl,
-      headers: {
-        'Authorization': `App ${config.apiKey}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-    });
-  }
 
   async send(
     message: ContactMessage,
@@ -37,9 +23,7 @@ export class InfobipContactHandler extends BaseHandler<ContactMessage> {
             to,
             content: {
               contacts: message.contacts,
-            },
-            callbackData: "Callback data",
-            notifyUrl: "https://www.example.com/whatsapp",
+            }
           };
           break;
 

@@ -1,22 +1,8 @@
 import { ViberVideoMessage, VideoMessage } from '../../types/message-types';
 import { BaseHandler } from '../BaseHandler';
-import axios, { AxiosInstance } from 'axios';
 
 export class InfobipVideoHandler extends BaseHandler<VideoMessage> {
   type: VideoMessage['type'] = 'video';
-  private client: AxiosInstance;
-
-  constructor(config: { baseUrl: string; apiKey: string }) {
-    super();
-    this.client = axios.create({
-      baseURL: config.baseUrl,
-      headers: {
-        'Authorization': `App ${config.apiKey}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-    });
-  }
 
   async send(message: VideoMessage, channelId: string, to: string, from?: string): Promise<void> {
     try {
@@ -32,14 +18,6 @@ export class InfobipVideoHandler extends BaseHandler<VideoMessage> {
             content: {
               mediaUrl: message.mediaUrl,
               caption: message.caption,
-            },
-            callbackData: 'Callback data',
-            notifyUrl: 'https://www.example.com/whatsapp',
-            urlOptions: {
-              shortenUrl: true,
-              trackClicks: true,
-              trackingUrl: 'https://example.com/click-report',
-              removeProtocol: true,
             }
           };
           break;

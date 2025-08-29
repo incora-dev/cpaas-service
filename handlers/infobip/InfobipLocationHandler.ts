@@ -1,22 +1,8 @@
 import { LocationMessage } from "../../types/message-types";
 import { BaseHandler } from "../BaseHandler";
-import axios, { AxiosInstance } from "axios";
 
 export class InfobipLocationHandler extends BaseHandler<LocationMessage> {
   type: LocationMessage["type"] = "location";
-  private client: AxiosInstance;
-
-  constructor(config: { baseUrl: string; apiKey: string }) {
-    super();
-    this.client = axios.create({
-      baseURL: config.baseUrl,
-      headers: {
-        'Authorization': `App ${config.apiKey}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-    });
-  }
 
   async send(
     message: LocationMessage,
@@ -40,9 +26,7 @@ export class InfobipLocationHandler extends BaseHandler<LocationMessage> {
               longitude: message.longitude,
               name: message.name,
               address: message.address,
-            },
-            callbackData: "Callback data",
-            notifyUrl: "https://www.example.com/whatsapp",
+            }
           };
           break;
 

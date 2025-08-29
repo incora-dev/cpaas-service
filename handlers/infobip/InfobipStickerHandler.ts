@@ -1,22 +1,8 @@
 import { StickerMessage } from "../../types/message-types";
 import { BaseHandler } from "../BaseHandler";
-import axios, { AxiosInstance } from "axios";
 
 export class InfobipStickerHandler extends BaseHandler<StickerMessage> {
   type: StickerMessage["type"] = "sticker";
-  private client: AxiosInstance;
-
-  constructor(config: { baseUrl: string; apiKey: string }) {
-    super();
-    this.client = axios.create({
-      baseURL: config.baseUrl,
-      headers: {
-        'Authorization': `App ${config.apiKey}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-    });
-  }
 
   async send(
     message: StickerMessage,
@@ -35,9 +21,7 @@ export class InfobipStickerHandler extends BaseHandler<StickerMessage> {
             from:
               from || process.env["INFOBIP_WHATSAPP_FROM"] || "447860088970",
             to,
-            content: { mediaUrl: message.mediaUrl },
-            callbackData: "Callback data",
-            notifyUrl: "https://www.example.com/whatsapp",
+            content: { mediaUrl: message.mediaUrl }
           };
           break;
 

@@ -1,22 +1,8 @@
 import { TextMessage } from '../../types/message-types';
 import { BaseHandler } from '../BaseHandler';
-import axios, { AxiosInstance } from 'axios';
 
 export class InfobipTextHandler extends BaseHandler<TextMessage> {
   type: TextMessage['type'] = 'text';
-  private client: AxiosInstance;
-
-  constructor(config: { baseUrl: string; apiKey: string }) {
-    super();
-    this.client = axios.create({
-      baseURL: config.baseUrl,
-      headers: {
-        'Authorization': `App ${config.apiKey}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-    });
-  }
 
   async send(message: TextMessage, channelId: string, to: string, from?: string): Promise<void> {
     try {

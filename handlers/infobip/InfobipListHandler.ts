@@ -1,22 +1,8 @@
 import { ListMessage, WhatsAppListMessage, ViberListMessage } from '../../types/message-types';
 import { BaseHandler } from '../BaseHandler';
-import axios, { AxiosInstance } from 'axios';
 
 export class InfobipListHandler extends BaseHandler<ListMessage> {
   type: ListMessage['type'] = 'list';
-  private client: AxiosInstance;
-
-  constructor(config: { baseUrl: string; apiKey: string }) {
-    super();
-    this.client = axios.create({
-      baseURL: config.baseUrl,
-      headers: {
-        'Authorization': `App ${config.apiKey}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-    });
-  }
 
   async send(message: ListMessage, channelId: string, to: string, from?: string): Promise<void> {
     try {
@@ -60,18 +46,10 @@ export class InfobipListHandler extends BaseHandler<ListMessage> {
                 text: whatsappMessage.text,
               },
               action: {
-                title: whatsappMessage.actionTitle || "Choose one",
+                title: whatsappMessage.actionTitle,
                 sections: whatsappMessage.sections,
               },
-            },
-            callbackData: "Callback data",
-            notifyUrl: "https://www.example.com/whatsapp",
-            urlOptions: {
-              shortenUrl: true,
-              trackClicks: true,
-              trackingUrl: "https://example.com/click-report",
-              removeProtocol: true,
-            },
+            }
           };
         break;
 

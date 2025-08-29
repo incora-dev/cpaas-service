@@ -1,22 +1,8 @@
 import { OtpMessage } from "../../types/message-types";
 import { BaseHandler } from "../BaseHandler";
-import axios, { AxiosInstance } from "axios";
 
 export class InfobipOtpHandler extends BaseHandler<OtpMessage> {
   type: OtpMessage["type"] = "otp";
-  private client: AxiosInstance;
-
-  constructor(config: { baseUrl: string; apiKey: string }) {
-    super();
-    this.client = axios.create({
-      baseURL: config.baseUrl,
-      headers: {
-        'Authorization': `App ${config.apiKey}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-    });
-  }
 
   async send(
     message: OtpMessage,
@@ -41,7 +27,7 @@ export class InfobipOtpHandler extends BaseHandler<OtpMessage> {
                  type: "OTP_TEMPLATE",
                  id: message.templateId,
                  parameters: message.parameters,
-                 language: message.language || "ENGLISH",
+                 language: message.language,
                },
                options: {
                  label: "TRANSACTIONAL",
