@@ -5,4 +5,5 @@ export { InfobipVideoHandler} from './InfobipVideoHandler';
 export {InfobipFileHandler} from './InfobipFileHandler';
 export { InfobipListHandler } from './InfobipListHandler';
 export { InfobipAudioHandler } from './InfobipAudioHandler';
-export { InfobipStickerHandler } from './InfobipStickerHandler'
+export { InfobipStickerHandler } from './InfobipStickerHandler';
+export { InfobipOtpHandler } from './InfobipOtpHandler'

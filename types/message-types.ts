@@ -1,4 +1,4 @@
-export type MessageType = 'text' | 'image' | 'carousel' | 'video' | 'file' | 'list' | 'audio' | 'sticker';
+export type MessageType = 'text' | 'image' | 'carousel' | 'video' | 'file' | 'list' | 'audio' | 'sticker' | 'otp';
 
 export interface Button {
   title: string;
@@ -43,7 +43,9 @@ export interface ViberVideoMessage extends BaseVideoMessage {
   duration: string;
 }
 
-export type VideoMessage = BaseVideoMessage | ViberVideoMessage;
+export interface WhatsappVideoMessage extends BaseVideoMessage {}
+
+export type VideoMessage = WhatsappVideoMessage | ViberVideoMessage;
 
 export interface BaseFileMessage extends BaseMessage {
   type: 'file';
@@ -54,11 +56,16 @@ export interface ViberFileMessage extends BaseFileMessage {
   fileName: string;
 }
 
-export type FileMessage = BaseFileMessage | ViberFileMessage;
+export interface WhatsappFileMessage extends BaseFileMessage {}
+
+export type FileMessage = WhatsappFileMessage | ViberFileMessage;
 
 export interface BaseListMessage extends BaseMessage {
   type: 'list';
   text: string;
+}
+
+export interface ViberListMessage extends BaseListMessage {
   options: string[];
 }
 
@@ -79,7 +86,7 @@ export interface WhatsAppListMessage extends BaseListMessage {
   messageId?: string;
 }
 
-export type ListMessage = BaseListMessage | WhatsAppListMessage;
+export type ListMessage = ViberListMessage | WhatsAppListMessage;
 
 export interface AudioMessage extends BaseMessage {
   type: 'audio';
@@ -91,6 +98,13 @@ export interface StickerMessage extends BaseMessage {
   type: 'sticker';
   mediaUrl: string;
   messageId?: string;
+}
+
+export interface OtpMessage extends BaseMessage {
+  type: 'otp';
+  templateId: string; 
+  parameters: Record<string, string>; 
+  language?: string; 
 }
 
 

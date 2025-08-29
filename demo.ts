@@ -1,7 +1,7 @@
 import { InfobipProvider, InfobipConfig } from './providers/InfobipProvider';
 import { ProviderFactory, ProviderConfig } from './providers/ProviderFactory';
-// import { CarouselMessage, ImageMessage, TextMessage, VideoMessage, FileMessage, ListMessage, AudioMessage } from './types/message-types';
-import { TextMessage, StickerMessage } from './types/message-types';
+// import { CarouselMessage, ImageMessage, TextMessage, VideoMessage, FileMessage, ListMessage, AudioMessage, StickerMessage } from './types/message-types';
+import { TextMessage, OtpMessage } from './types/message-types';
 
 main();
 
@@ -97,20 +97,31 @@ async function main() {
     //   } as AudioMessage,
     //   "380976115062"
     // );
-        await infobipProvider.send(
-          "whatsapp",
-          {
-            type: "sticker",
-            mediaUrl:
-              "https://cdn.promptden.com/images/528b3840-0144-4e95-ad94-45f14754ad0e.webp",
-            messageId: "123e4567-e89b-12d3-a456-426614174000",
-          } as StickerMessage,
-          "380976115062"
-        );
+    //     await infobipProvider.send(
+    //       "whatsapp",
+    //       {
+    //         type: "sticker",
+    //         mediaUrl:
+    //           "https://cdn.promptden.com/images/528b3840-0144-4e95-ad94-45f14754ad0e.webp",
+    //         messageId: "123e4567-e89b-12d3-a456-426614174000",
+    //       } as StickerMessage,
+    //       "380976115062"
+    //     );
+    await infobipProvider.send(
+      "viber",
+      {
+        type: "otp",
+        templateId: "426614174000",
+        parameters: {
+          code: "123456",
+          expiry: "5 minutes",
+        },
+        language: "ENGLISH",
+      } as OtpMessage,
+      "380976115062"
+    );
 
-
-
-    console.log('Provider-specific channel messages sent successfully!');
+    console.log("Provider-specific channel messages sent successfully!");
   } catch (error) {
     console.error('Error with provider-specific channels:', error);
   }

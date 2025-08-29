@@ -56,7 +56,9 @@ export interface ViberVideoContent extends BaseVideoContent {
   duration: string;
 }
 
-export type VideoContent = BaseVideoContent | ViberVideoContent;
+export interface WhatsappVideoContent extends BaseVideoContent {}
+
+export type VideoContent = WhatsappVideoContent | ViberVideoContent;
 
 export interface BaseFileContent extends BaseMessageContent {
   type: 'file';
@@ -67,11 +69,16 @@ export interface ViberFileContent extends BaseFileContent {
   fileName: string;
 }
 
-export type FileContent = BaseFileContent | ViberFileContent;
+export interface WhatsappFileContent extends BaseFileContent {}
+
+export type FileContent = WhatsappFileContent | ViberFileContent;
 
 export interface BaseListContent extends BaseMessageContent {
   type: 'list';
   text: string;
+}
+
+export interface ViberListContent extends BaseListContent {
   options: string[];
 }
 
@@ -92,7 +99,7 @@ export interface WhatsAppListContent extends BaseListContent {
   messageId?: string;
 }
 
-export type ListContent = BaseListContent | WhatsAppListContent;
+export type ListContent = ViberListContent | WhatsAppListContent;
 
 export interface AudioContent extends BaseMessageContent {
   type: 'audio';
@@ -106,6 +113,13 @@ export interface StickerContent extends BaseMessageContent {
   messageId?: string;
 }
 
+export interface OtpContent extends BaseMessageContent {
+  type: "otp";
+  templateId: string;
+  parameters: Record<string, string>;
+  language?: string;
+}
+
 export type MessageContent =
   | TextContent
   | ImageContent
@@ -115,7 +129,8 @@ export type MessageContent =
   | VideoContent
   | FileContent
   | ListContent
-  | AudioContent;
+  | AudioContent
+  | OtpContent;
 
 export interface UnifiedMessage {
   provider: MessageProvider;

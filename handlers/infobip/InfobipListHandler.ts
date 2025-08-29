@@ -1,4 +1,4 @@
-import { ListMessage, WhatsAppListMessage } from '../../types/message-types';
+import { ListMessage, WhatsAppListMessage, ViberListMessage } from '../../types/message-types';
 import { BaseHandler } from '../BaseHandler';
 import axios, { AxiosInstance } from 'axios';
 
@@ -26,23 +26,25 @@ export class InfobipListHandler extends BaseHandler<ListMessage> {
       switch (channelId) {
         case 'viber':
           endpoint = '/viber/2/messages';
+          const viberMessage = message as ViberListMessage;
           payload = {
             messages: [
               {
-                sender: from || process.env['INFOBIP_VIBER_FROM'] || 'IBSelfServe',
+                sender:
+                  from || process.env["INFOBIP_VIBER_FROM"] || "IBSelfServe",
                 destinations: [{ to }],
                 content: {
-                  type: 'LIST',
+                  type: "LIST",
                   text: message.text,
-                  options: message.options
+                  options: viberMessage.options,
                 },
                 options: {
-                  label: 'TRANSACTIONAL',
+                  label: "TRANSACTIONAL",
                   applySessionRate: false,
-                  toPrimaryDeviceOnly: false
-                }
-              }
-            ]
+                  toPrimaryDeviceOnly: false,
+                },
+              },
+            ],
           };
           break;
 
