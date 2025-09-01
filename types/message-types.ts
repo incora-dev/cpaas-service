@@ -56,7 +56,10 @@ export interface ViberFileMessage extends BaseFileMessage {
   fileName: string;
 }
 
-export interface WhatsappFileMessage extends BaseFileMessage {}
+export interface WhatsappFileMessage extends BaseFileMessage {
+  filename?: string;
+  caption?: string;
+}
 
 export type FileMessage = WhatsappFileMessage | ViberFileMessage;
 

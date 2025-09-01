@@ -1,4 +1,4 @@
-import { FileMessage, ViberFileMessage } from '../../types/message-types';
+import { FileMessage, ViberFileMessage, WhatsappFileMessage } from '../../types/message-types';
 import { BaseHandler } from '../BaseHandler';
 
 export class InfobipFileHandler extends BaseHandler<FileMessage> {
@@ -12,12 +12,15 @@ export class InfobipFileHandler extends BaseHandler<FileMessage> {
       switch (channelId) {
         case 'whatsapp':
           endpoint = '/whatsapp/1/message/document';
+          const whatsappMessage = message as WhatsappFileMessage;
           payload = {
-            from: from || process.env['INFOBIP_WHATSAPP_FROM'],
+            from: from || process.env["INFOBIP_WHATSAPP_FROM"],
             to,
             content: {
-              mediaUrl: message.mediaUrl
-            }
+              mediaUrl: whatsappMessage.mediaUrl,
+              caption: whatsappMessage.caption,
+              filename: whatsappMessage.filename,
+            },
           };
           break;
 
