@@ -19,7 +19,7 @@ export class InfobipLocationHandler extends BaseHandler<LocationMessage> {
           endpoint = "/whatsapp/1/message/location";
           payload = {
             from:
-              from || process.env["INFOBIP_WHATSAPP_FROM"] || "447860088970",
+              from || process.env["INFOBIP_WHATSAPP_FROM"],
             to,
             content: {
               latitude: message.latitude,

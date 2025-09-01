@@ -22,7 +22,7 @@ export class InfobipCarouselHandler extends BaseHandler<CarouselMessage> {
           payload = {
             messages: [
               {
-                sender: from || process.env['INFOBIP_VIBER_FROM'] || 'IBSelfServe',
+                sender: from || process.env['INFOBIP_VIBER_FROM'],
                 destinations: [{ to }],
                 content: {
                   text: 'Check out these options:',

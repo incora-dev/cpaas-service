@@ -13,7 +13,7 @@ export class InfobipFileHandler extends BaseHandler<FileMessage> {
         case 'whatsapp':
           endpoint = '/whatsapp/1/message/document';
           payload = {
-            from: from || process.env['INFOBIP_WHATSAPP_FROM'] || '447860088970',
+            from: from || process.env['INFOBIP_WHATSAPP_FROM'],
             to,
             content: {
               mediaUrl: message.mediaUrl
@@ -27,7 +27,7 @@ export class InfobipFileHandler extends BaseHandler<FileMessage> {
           payload = {
             messages: [
               {
-                sender: from || process.env['INFOBIP_VIBER_FROM'] || 'IBSelfServe',
+                sender: from || process.env['INFOBIP_VIBER_FROM'],
                 destinations: [{ to }],
                 content: {
                   type: 'FILE',

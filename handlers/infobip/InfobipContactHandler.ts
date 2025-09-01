@@ -19,7 +19,7 @@ export class InfobipContactHandler extends BaseHandler<ContactMessage> {
           endpoint = "/whatsapp/1/message/contact";
           payload = {
             from:
-              from || process.env["INFOBIP_WHATSAPP_FROM"] || "447860088970",
+              from || process.env["INFOBIP_WHATSAPP_FROM"],
             to,
             content: {
               contacts: message.contacts,

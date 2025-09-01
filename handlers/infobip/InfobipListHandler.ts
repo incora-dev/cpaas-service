@@ -17,7 +17,7 @@ export class InfobipListHandler extends BaseHandler<ListMessage> {
             messages: [
               {
                 sender:
-                  from || process.env["INFOBIP_VIBER_FROM"] || "IBSelfServe",
+                  from || process.env["INFOBIP_VIBER_FROM"],
                 destinations: [{ to }],
                 content: {
                   type: "LIST",
@@ -39,7 +39,7 @@ export class InfobipListHandler extends BaseHandler<ListMessage> {
           const whatsappMessage = message as WhatsAppListMessage;
           payload = {
             from:
-              from || process.env["INFOBIP_WHATSAPP_FROM"] || "447860088970",
+              from || process.env["INFOBIP_WHATSAPP_FROM"],
             to,
             content: {
               body: {

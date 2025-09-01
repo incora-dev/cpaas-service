@@ -21,7 +21,7 @@ export class InfobipOtpHandler extends BaseHandler<OtpMessage> {
            messages: [
              {
                sender:
-                 from || process.env["INFOBIP_VIBER_FROM"] || "IBSelfServe",
+                 from || process.env["INFOBIP_VIBER_FROM"],
                destinations: [{ to }],
                content: {
                  type: "OTP_TEMPLATE",

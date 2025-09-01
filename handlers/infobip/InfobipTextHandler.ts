@@ -26,7 +26,7 @@ export class InfobipTextHandler extends BaseHandler<TextMessage> {
         case 'whatsapp':
           endpoint = '/whatsapp/1/message/text';
           payload = {
-            from: from || process.env['INFOBIP_WHATSAPP_FROM'] || '447860088970',
+            from: from || process.env['INFOBIP_WHATSAPP_FROM'],
             to,
             content: {
               text: message.text,
@@ -43,7 +43,7 @@ export class InfobipTextHandler extends BaseHandler<TextMessage> {
           payload = {
             messages: [
               {
-                sender: from || process.env['INFOBIP_VIBER_FROM'] || 'IBSelfServe',
+                sender: from || process.env['INFOBIP_VIBER_FROM'],
                 destinations: [{ to }],
                 content: {
                   text: message.text,

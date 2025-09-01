@@ -19,7 +19,7 @@ export class InfobipAudioHandler extends BaseHandler<AudioMessage> {
           endpoint = "/whatsapp/1/message/audio";
           payload = {
             from:
-              from || process.env["INFOBIP_WHATSAPP_FROM"] || "447860088970",
+              from || process.env["INFOBIP_WHATSAPP_FROM"],
             to,
             content: { mediaUrl: message.mediaUrl },
           };

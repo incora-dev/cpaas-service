@@ -2,6 +2,9 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda
 import { InfobipConfig } from './types/infobip.types';
 import { InfobipProvider } from './providers/InfobipProvider';
 import { BaseMessage } from './types/message-types';
+import dotenv from "dotenv";
+
+dotenv.config();
 
 interface MessageEvent {
   channel: string;

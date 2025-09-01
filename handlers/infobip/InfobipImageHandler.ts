@@ -13,7 +13,7 @@ export class InfobipImageHandler extends BaseHandler<ImageMessage> {
         case 'whatsapp':
           endpoint = '/whatsapp/1/message/image';
           payload = {
-            from: from || process.env['INFOBIP_WHATSAPP_FROM'] || '447860088970',
+            from: from || process.env['INFOBIP_WHATSAPP_FROM'],
             to,
             content: {
               mediaUrl: message.mediaUrl,
@@ -27,7 +27,7 @@ export class InfobipImageHandler extends BaseHandler<ImageMessage> {
           payload = {
             messages: [
               {
-                sender: from || process.env['INFOBIP_VIBER_FROM'] || 'IBSelfServe',
+                sender: from || process.env['INFOBIP_VIBER_FROM'],
                 destinations: [{ to }],
                 content: {
                   mediaUrl: message.mediaUrl,
