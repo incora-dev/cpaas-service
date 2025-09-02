@@ -1,6 +1,18 @@
 import { InfobipProvider, InfobipConfig } from './providers/InfobipProvider';
 import { ProviderFactory, ProviderConfig } from './providers/ProviderFactory';
-import { CarouselMessage, ImageMessage, TextMessage, VideoMessage, FileMessage, ListMessage, AudioMessage, StickerMessage, OtpMessage, LocationMessage, ContactMessage } from './types/message-types';
+import {
+  CarouselMessage,
+  ImageMessage,
+  TextMessage,
+  VideoMessage,
+  FileMessage,
+  ListMessage,
+  AudioMessage,
+  StickerMessage,
+  OtpMessage,
+  LocationMessage,
+  ContactMessage
+} from "./types/message-types";
 import dotenv from "dotenv";
 
 dotenv.config();

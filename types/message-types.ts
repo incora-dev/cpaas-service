@@ -1,4 +1,23 @@
-export type MessageType = 'text' | 'image' | 'carousel' | 'video' | 'file' | 'list' | 'audio' | 'sticker' | 'otp' | 'location' | 'contact' | 'card';
+export interface InfobipConfig {
+  baseUrl: string;
+  apiKey: string;
+}
+
+export type MessageProvider = "sms" | "whatsapp" | "rcs" | "viber";
+
+export type MessageType =
+  | "text"
+  | "image"
+  | "carousel"
+  | "video"
+  | "file"
+  | "list"
+  | "audio"
+  | "sticker"
+  | "otp"
+  | "location"
+  | "contact"
+  | "card";
 
 export interface Button {
   title: string;
@@ -10,30 +29,49 @@ export interface BaseMessage {
 }
 
 export interface TextMessage extends BaseMessage {
-  type: 'text';
+  type: "text";
   text: string;
 }
 
 export interface ImageMessage extends BaseMessage {
-  type: 'image';
+  type: "image";
   mediaUrl: string;
   caption?: string;
 }
 
-export interface CarouselItem {
+export interface BaseCarouselItem {
   title: string;
   description: string;
   mediaUrl: string;
+}
+
+export interface BaseCarouselMessage extends BaseMessage {
+  type: "carousel";
+  items: BaseCarouselItem[];
+}
+
+export interface ViberCarouselItem extends BaseCarouselItem {
   buttons: Button[];
 }
 
-export interface CarouselMessage extends BaseMessage {
-  type: 'carousel';
-  items: CarouselItem[];
+export interface ViberCarouselMessage extends BaseCarouselMessage {
+  items: ViberCarouselItem[];
 }
 
+export interface RcsCarouselItem extends BaseCarouselItem {
+  height: "SHORT" | "MEDIUM" | "TALL";
+  thumbnailUrl?: string;
+}
+
+export interface RcsCarouselMessage extends BaseCarouselMessage {
+  items: RcsCarouselItem[];
+  cardWidth: "SMALL" | "MEDIUM";
+}
+
+export type CarouselMessage = ViberCarouselMessage | RcsCarouselMessage;
+
 export interface BaseVideoMessage extends BaseMessage {
-  type: 'video';
+  type: "video";
   mediaUrl: string;
   caption?: string;
 }
@@ -43,16 +81,19 @@ export interface ViberVideoMessage extends BaseVideoMessage {
   duration: string;
 }
 
-export interface WhatsappVideoMessage extends BaseVideoMessage { }
+export interface WhatsappVideoMessage extends BaseVideoMessage {}
 
 export interface RcsVideoMessage extends BaseVideoMessage {
   thumbnailUrl?: string;
 }
 
-export type VideoMessage = WhatsappVideoMessage | ViberVideoMessage | RcsVideoMessage;
+export type VideoMessage =
+  | WhatsappVideoMessage
+  | ViberVideoMessage
+  | RcsVideoMessage;
 
 export interface BaseFileMessage extends BaseMessage {
-  type: 'file';
+  type: "file";
   mediaUrl: string;
 }
 
@@ -68,7 +109,7 @@ export interface WhatsappFileMessage extends BaseFileMessage {
 export type FileMessage = WhatsappFileMessage | ViberFileMessage;
 
 export interface BaseListMessage extends BaseMessage {
-  type: 'list';
+  type: "list";
   text: string;
 }
 
@@ -95,12 +136,12 @@ export interface WhatsAppListMessage extends BaseListMessage {
 export type ListMessage = ViberListMessage | WhatsAppListMessage;
 
 export interface AudioMessage extends BaseMessage {
-  type: 'audio';
+  type: "audio";
   mediaUrl: string;
 }
 
 export interface StickerMessage extends BaseMessage {
-  type: 'sticker';
+  type: "sticker";
   mediaUrl: string;
 }
 
@@ -222,9 +263,3 @@ export interface CardMessage extends BaseMessage {
   thumbnailUrl?: string;
   height: "SHORT" | "MEDIUM" | "TALL";
 }
-
-
-
-
-
-
