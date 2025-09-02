@@ -1,4 +1,8 @@
-import { CarouselMessage } from '../../types/message-types';
+import {
+  CarouselMessage,
+  ViberCarouselMessage,
+  RcsCarouselMessage,
+} from "../../types/message-types";
 import { BaseHandler } from '../BaseHandler';
 
 export class InfobipCarouselHandler extends BaseHandler<CarouselMessage> {
@@ -10,9 +14,10 @@ export class InfobipCarouselHandler extends BaseHandler<CarouselMessage> {
       let payload: any;
 
       switch (channelId) {
-        case 'viber':
-          endpoint = '/viber/2/messages';
-          const cards = message.items.map(item => ({
+        case "viber":
+          endpoint = "/viber/2/messages";
+          const viberMessage = message as ViberCarouselMessage;
+          const cards = viberMessage.items.map((item) => ({
             text: item.title,
             mediaUrl: item.mediaUrl,
             description: item.description,
@@ -22,25 +27,57 @@ export class InfobipCarouselHandler extends BaseHandler<CarouselMessage> {
           payload = {
             messages: [
               {
-                sender: from || process.env['INFOBIP_VIBER_FROM'],
+                sender: from || process.env["INFOBIP_VIBER_FROM"],
                 destinations: [{ to }],
                 content: {
-                  text: 'Check out these options:',
-                  type: 'CAROUSEL',
-                  cards
+                  text: "Check out these options:",
+                  type: "CAROUSEL",
+                  cards,
                 },
                 options: {
-                  label: 'TRANSACTIONAL',
+                  label: "TRANSACTIONAL",
                   applySessionRate: false,
-                  toPrimaryDeviceOnly: false
-                }
+                  toPrimaryDeviceOnly: false,
+                },
+              },
+            ],
+          };
+          break;
+
+        case "rcs":
+          endpoint = "/rcs/2/messages";
+          const rcsMessage = message as RcsCarouselMessage;
+          const rcsCards = rcsMessage.items.map((item) => ({
+            title: item.title,
+            description: item.description,
+            media: {
+              file: {
+                url: item.mediaUrl,
+              },
+              thumbnail: { url: item.thumbnailUrl },
+              height: item.height,
+            },
+          }));
+
+          payload = {
+            messages: [
+              {
+                sender: from || process.env["INFOBIP_RCS_FROM"],
+                destinations: [{ to }],
+                content: {
+                  type: "CAROUSEL",
+                  cardWidth: rcsMessage.cardWidth,
+                  contents: rcsCards,
+                },
               },
             ],
           };
           break;
 
         default:
-          throw new Error(`Unsupported channel for carousel message: ${channelId}`);
+          throw new Error(
+            `Unsupported channel for carousel message: ${channelId}`
+          );
       }
 
       const response = await this.client.post(endpoint, payload);
