@@ -1,5 +1,5 @@
-import { BaseChannel } from '../channels/BaseChannel';
-import { BaseMessage } from '../types/message-types';
+import { BaseChannel } from "../channels/BaseChannel";
+import { BaseMessage } from "../types/general";
 
 export abstract class BaseProvider {
   protected channels: Map<string, BaseChannel> = new Map();
@@ -8,12 +8,20 @@ export abstract class BaseProvider {
     this.channels.set(channel.id, channel);
   }
 
-  async send(channelId: string, message: BaseMessage, to: string, from?: string) {
+  async send(
+    channelId: string,
+    message: BaseMessage,
+    to: string,
+    from?: string
+  ) {
     const channel = this.channels.get(channelId);
     if (!channel) throw new Error(`Channel ${channelId} not found`);
 
     const handler = channel.getHandler(message.type);
-    if (!handler) throw new Error(`Message type ${message.type} not supported on ${channelId}`);
+    if (!handler)
+      throw new Error(
+        `Message type ${message.type} not supported on ${channelId}`
+      );
 
     return handler.send(message, channelId, to, from);
   }

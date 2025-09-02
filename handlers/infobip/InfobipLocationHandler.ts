@@ -1,4 +1,4 @@
-import { LocationMessage } from "../../types/message-types";
+import { LocationMessage } from "../../types/messages/location-types";
 import { BaseHandler } from "../BaseHandler";
 
 export class InfobipLocationHandler extends BaseHandler<LocationMessage> {
@@ -18,15 +18,14 @@ export class InfobipLocationHandler extends BaseHandler<LocationMessage> {
         case "whatsapp":
           endpoint = "/whatsapp/1/message/location";
           payload = {
-            from:
-              from || process.env["INFOBIP_WHATSAPP_FROM"],
+            from: from || process.env["INFOBIP_WHATSAPP_FROM"],
             to,
             content: {
               latitude: message.latitude,
               longitude: message.longitude,
               name: message.name,
               address: message.address,
-            }
+            },
           };
           break;
 
@@ -35,7 +34,7 @@ export class InfobipLocationHandler extends BaseHandler<LocationMessage> {
             `Unsupported channel for location message: ${channelId}`
           );
       }
-        
+
       const response = await this.client.post(endpoint, payload);
       console.log(
         `[${channelId}] Infobip location message sent successfully:`,

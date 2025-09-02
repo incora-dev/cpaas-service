@@ -2,13 +2,18 @@ import {
   ViberVideoMessage,
   VideoMessage,
   RcsVideoMessage,
-} from "../../types/message-types";
-import { BaseHandler } from '../BaseHandler';
+} from "../../types/messages/video-types";
+import { BaseHandler } from "../BaseHandler";
 
 export class InfobipVideoHandler extends BaseHandler<VideoMessage> {
-  type: VideoMessage['type'] = 'video';
+  type: VideoMessage["type"] = "video";
 
-  async send(message: VideoMessage, channelId: string, to: string, from?: string): Promise<void> {
+  async send(
+    message: VideoMessage,
+    channelId: string,
+    to: string,
+    from?: string
+  ): Promise<void> {
     try {
       let endpoint: string;
       let payload: any;
@@ -80,9 +85,15 @@ export class InfobipVideoHandler extends BaseHandler<VideoMessage> {
       }
 
       const response = await this.client.post(endpoint, payload);
-      console.log(`[${channelId}] Infobip video message sent successfully:`, response.data);
+      console.log(
+        `[${channelId}] Infobip video message sent successfully:`,
+        response.data
+      );
     } catch (error: any) {
-      console.error(`[${channelId}] Error sending Infobip video message:`, error);
+      console.error(
+        `[${channelId}] Error sending Infobip video message:`,
+        error
+      );
       throw error;
     }
   }

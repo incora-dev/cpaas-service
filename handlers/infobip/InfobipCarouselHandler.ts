@@ -2,13 +2,18 @@ import {
   CarouselMessage,
   ViberCarouselMessage,
   RcsCarouselMessage,
-} from "../../types/message-types";
-import { BaseHandler } from '../BaseHandler';
+} from "../../types/messages/carousel-types";
+import { BaseHandler } from "../BaseHandler";
 
 export class InfobipCarouselHandler extends BaseHandler<CarouselMessage> {
-  type: CarouselMessage['type'] = 'carousel';
+  type: CarouselMessage["type"] = "carousel";
 
-  async send(message: CarouselMessage, channelId: string, to: string, from?: string): Promise<void> {
+  async send(
+    message: CarouselMessage,
+    channelId: string,
+    to: string,
+    from?: string
+  ): Promise<void> {
     try {
       let endpoint: string;
       let payload: any;
@@ -81,9 +86,15 @@ export class InfobipCarouselHandler extends BaseHandler<CarouselMessage> {
       }
 
       const response = await this.client.post(endpoint, payload);
-      console.log(`[${channelId}] Infobip carousel message sent successfully:`, response.data);
+      console.log(
+        `[${channelId}] Infobip carousel message sent successfully:`,
+        response.data
+      );
     } catch (error) {
-      console.error(`[${channelId}] Error sending Infobip carousel message:`, error);
+      console.error(
+        `[${channelId}] Error sending Infobip carousel message:`,
+        error
+      );
       throw error;
     }
   }

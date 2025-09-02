@@ -1,10 +1,19 @@
-import { FileMessage, ViberFileMessage, WhatsappFileMessage } from '../../types/message-types';
-import { BaseHandler } from '../BaseHandler';
+import {
+  FileMessage,
+  ViberFileMessage,
+  WhatsappFileMessage,
+} from "../../types/messages/file-types";
+import { BaseHandler } from "../BaseHandler";
 
 export class InfobipFileHandler extends BaseHandler<FileMessage> {
-  type: FileMessage['type'] = 'file';
+  type: FileMessage["type"] = "file";
 
-  async send(message: FileMessage, channelId: string, to: string, from?: string): Promise<void> {
+  async send(
+    message: FileMessage,
+    channelId: string,
+    to: string,
+    from?: string
+  ): Promise<void> {
     try {
       let endpoint: string;
       let payload: any;
@@ -70,9 +79,15 @@ export class InfobipFileHandler extends BaseHandler<FileMessage> {
       }
 
       const response = await this.client.post(endpoint, payload);
-      console.log(`[${channelId}] Infobip file message sent successfully:`, response.data);
+      console.log(
+        `[${channelId}] Infobip file message sent successfully:`,
+        response.data
+      );
     } catch (error: any) {
-      console.error(`[${channelId}] Error sending Infobip file message:`, error);
+      console.error(
+        `[${channelId}] Error sending Infobip file message:`,
+        error
+      );
       throw error;
     }
   }

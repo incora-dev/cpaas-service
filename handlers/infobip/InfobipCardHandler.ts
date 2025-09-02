@@ -1,4 +1,4 @@
-import { CardMessage } from "../../types/message-types";
+import { CardMessage } from "../../types/messages/card-types";
 import { BaseHandler } from "../BaseHandler";
 
 export class InfobipCardHandler extends BaseHandler<CardMessage> {

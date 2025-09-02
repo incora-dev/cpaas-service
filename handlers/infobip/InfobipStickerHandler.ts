@@ -1,4 +1,4 @@
-import { StickerMessage } from "../../types/message-types";
+import { StickerMessage } from "../../types/messages/sticker-types";
 import { BaseHandler } from "../BaseHandler";
 
 export class InfobipStickerHandler extends BaseHandler<StickerMessage> {
@@ -18,10 +18,9 @@ export class InfobipStickerHandler extends BaseHandler<StickerMessage> {
         case "whatsapp":
           endpoint = "/whatsapp/1/message/sticker";
           payload = {
-            from:
-              from || process.env["INFOBIP_WHATSAPP_FROM"],
+            from: from || process.env["INFOBIP_WHATSAPP_FROM"],
             to,
-            content: { mediaUrl: message.mediaUrl }
+            content: { mediaUrl: message.mediaUrl },
           };
           break;
 

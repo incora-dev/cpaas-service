@@ -1,10 +1,15 @@
-import { ImageMessage } from '../../types/message-types';
-import { BaseHandler } from '../BaseHandler';
+import { ImageMessage } from "../../types/messages/image-types";
+import { BaseHandler } from "../BaseHandler";
 
 export class InfobipImageHandler extends BaseHandler<ImageMessage> {
-  type: ImageMessage['type'] = 'image';
+  type: ImageMessage["type"] = "image";
 
-  async send(message: ImageMessage, channelId: string, to: string, from?: string): Promise<void> {
+  async send(
+    message: ImageMessage,
+    channelId: string,
+    to: string,
+    from?: string
+  ): Promise<void> {
     try {
       let endpoint: string;
       let payload: any;
@@ -69,9 +74,15 @@ export class InfobipImageHandler extends BaseHandler<ImageMessage> {
       }
 
       const response = await this.client.post(endpoint, payload);
-      console.log(`[${channelId}] Infobip image message sent successfully:`, response.data);
+      console.log(
+        `[${channelId}] Infobip image message sent successfully:`,
+        response.data
+      );
     } catch (error) {
-      console.error(`[${channelId}] Error sending Infobip image message:`, error);
+      console.error(
+        `[${channelId}] Error sending Infobip image message:`,
+        error
+      );
       throw error;
     }
   }

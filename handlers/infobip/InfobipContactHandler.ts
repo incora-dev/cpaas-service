@@ -1,4 +1,4 @@
-import { ContactMessage } from "../../types/message-types";
+import { ContactMessage } from "../../types/messages/contact-types";
 import { BaseHandler } from "../BaseHandler";
 
 export class InfobipContactHandler extends BaseHandler<ContactMessage> {
@@ -18,12 +18,11 @@ export class InfobipContactHandler extends BaseHandler<ContactMessage> {
         case "whatsapp":
           endpoint = "/whatsapp/1/message/contact";
           payload = {
-            from:
-              from || process.env["INFOBIP_WHATSAPP_FROM"],
+            from: from || process.env["INFOBIP_WHATSAPP_FROM"],
             to,
             content: {
               contacts: message.contacts,
-            }
+            },
           };
           break;
 
@@ -32,7 +31,7 @@ export class InfobipContactHandler extends BaseHandler<ContactMessage> {
             `Unsupported channel for contact message: ${channelId}`
           );
       }
-        
+
       const response = await this.client.post(endpoint, payload);
       console.log(
         `[${channelId}] Infobip contact message sent successfully:`,

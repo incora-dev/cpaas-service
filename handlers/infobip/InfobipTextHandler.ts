@@ -1,10 +1,15 @@
-import { TextMessage } from '../../types/message-types';
-import { BaseHandler } from '../BaseHandler';
+import { TextMessage } from "../../types/messages/text-types";
+import { BaseHandler } from "../BaseHandler";
 
 export class InfobipTextHandler extends BaseHandler<TextMessage> {
-  type: TextMessage['type'] = 'text';
+  type: TextMessage["type"] = "text";
 
-  async send(message: TextMessage, channelId: string, to: string, from?: string): Promise<void> {
+  async send(
+    message: TextMessage,
+    channelId: string,
+    to: string,
+    from?: string
+  ): Promise<void> {
     try {
       let endpoint: string;
       let payload: any;
@@ -80,9 +85,15 @@ export class InfobipTextHandler extends BaseHandler<TextMessage> {
       }
 
       const response = await this.client.post(endpoint, payload);
-      console.log(`[${channelId}] Infobip text message sent successfully:`, response.data);
+      console.log(
+        `[${channelId}] Infobip text message sent successfully:`,
+        response.data
+      );
     } catch (error) {
-      console.error(`[${channelId}] Error sending Infobip text message:`, error);
+      console.error(
+        `[${channelId}] Error sending Infobip text message:`,
+        error
+      );
       throw error;
     }
   }
