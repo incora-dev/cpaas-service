@@ -1,4 +1,4 @@
-import { AudioMessage } from "../../types/message-types";
+import { AudioMessage } from "../../types/messages/audio-types";
 import { BaseHandler } from "../BaseHandler";
 
 export class InfobipAudioHandler extends BaseHandler<AudioMessage> {

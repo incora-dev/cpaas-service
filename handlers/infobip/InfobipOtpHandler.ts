@@ -1,4 +1,4 @@
-import { OtpMessage } from "../../types/message-types";
+import { OtpMessage } from "../../types/messages/otp-types";
 import { BaseHandler } from "../BaseHandler";
 
 export class InfobipOtpHandler extends BaseHandler<OtpMessage> {
@@ -16,33 +16,30 @@ export class InfobipOtpHandler extends BaseHandler<OtpMessage> {
 
       switch (channelId) {
         case "viber":
-         endpoint = "/viber/2/messages";
-         payload = {
-           messages: [
-             {
-               sender:
-                 from || process.env["INFOBIP_VIBER_FROM"],
-               destinations: [{ to }],
-               content: {
-                 type: "OTP_TEMPLATE",
-                 id: message.templateId,
-                 parameters: message.parameters,
-                 language: message.language,
-               },
-               options: {
-                 label: "TRANSACTIONAL",
-                 applySessionRate: false,
-                 toPrimaryDeviceOnly: false,
-               },
-             },
-           ],
-         };
+          endpoint = "/viber/2/messages";
+          payload = {
+            messages: [
+              {
+                sender: from || process.env["INFOBIP_VIBER_FROM"],
+                destinations: [{ to }],
+                content: {
+                  type: "OTP_TEMPLATE",
+                  id: message.templateId,
+                  parameters: message.parameters,
+                  language: message.language,
+                },
+                options: {
+                  label: "TRANSACTIONAL",
+                  applySessionRate: false,
+                  toPrimaryDeviceOnly: false,
+                },
+              },
+            ],
+          };
           break;
 
         default:
-          throw new Error(
-            `Unsupported channel for otp message: ${channelId}`
-          );
+          throw new Error(`Unsupported channel for otp message: ${channelId}`);
       }
 
       const response = await this.client.post(endpoint, payload);
@@ -51,10 +48,7 @@ export class InfobipOtpHandler extends BaseHandler<OtpMessage> {
         response.data
       );
     } catch (error) {
-      console.error(
-        `[${channelId}] Error sending Infobip otp message:`,
-        error
-      );
+      console.error(`[${channelId}] Error sending Infobip otp message:`, error);
       throw error;
     }
   }

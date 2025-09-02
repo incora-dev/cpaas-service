@@ -1,4 +1,4 @@
-import { BaseMessage } from "../types/message-types";
+import { BaseMessage } from "../types/general";
 import axios, { AxiosInstance } from "axios";
 
 export abstract class BaseHandler<T extends BaseMessage = BaseMessage> {
@@ -9,9 +9,9 @@ export abstract class BaseHandler<T extends BaseMessage = BaseMessage> {
     this.client = axios.create({
       baseURL: config.baseUrl,
       headers: {
-        'Authorization': `App ${config.apiKey}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
+        Authorization: `App ${config.apiKey}`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
       },
     });
   }
