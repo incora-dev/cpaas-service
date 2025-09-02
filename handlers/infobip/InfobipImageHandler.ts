@@ -10,42 +10,62 @@ export class InfobipImageHandler extends BaseHandler<ImageMessage> {
       let payload: any;
 
       switch (channelId) {
-        case 'whatsapp':
-          endpoint = '/whatsapp/1/message/image';
+        case "whatsapp":
+          endpoint = "/whatsapp/1/message/image";
           payload = {
-            from: from || process.env['INFOBIP_WHATSAPP_FROM'],
+            from: from || process.env["INFOBIP_WHATSAPP_FROM"],
             to,
             content: {
               mediaUrl: message.mediaUrl,
               caption: message.caption,
-            }
+            },
           };
           break;
 
-        case 'viber':
-          endpoint = '/viber/2/messages';
+        case "viber":
+          endpoint = "/viber/2/messages";
           payload = {
             messages: [
               {
-                sender: from || process.env['INFOBIP_VIBER_FROM'],
+                sender: from || process.env["INFOBIP_VIBER_FROM"],
                 destinations: [{ to }],
                 content: {
                   mediaUrl: message.mediaUrl,
                   caption: message.caption,
-                  type: 'IMAGE'
+                  type: "IMAGE",
                 },
                 options: {
-                  label: 'TRANSACTIONAL',
+                  label: "TRANSACTIONAL",
                   applySessionRate: false,
-                  toPrimaryDeviceOnly: false
-                }
+                  toPrimaryDeviceOnly: false,
+                },
+              },
+            ],
+          };
+          break;
+
+        case "rcs":
+          endpoint = "/rcs/2/messages";
+          payload = {
+            messages: [
+              {
+                from: from || process.env["INFOBIP_RCS_FROM"],
+                to,
+                content: {
+                  type: "FILE",
+                  file: {
+                    url: message.mediaUrl,
+                  },
+                },
               },
             ],
           };
           break;
 
         default:
-          throw new Error(`Unsupported channel for image message: ${channelId}`);
+          throw new Error(
+            `Unsupported channel for image message: ${channelId}`
+          );
       }
 
       const response = await this.client.post(endpoint, payload);

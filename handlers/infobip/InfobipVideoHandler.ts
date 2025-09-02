@@ -1,4 +1,8 @@
-import { ViberVideoMessage, VideoMessage } from '../../types/message-types';
+import {
+  ViberVideoMessage,
+  VideoMessage,
+  RcsVideoMessage,
+} from "../../types/message-types";
 import { BaseHandler } from '../BaseHandler';
 
 export class InfobipVideoHandler extends BaseHandler<VideoMessage> {
@@ -10,45 +14,69 @@ export class InfobipVideoHandler extends BaseHandler<VideoMessage> {
       let payload: any;
 
       switch (channelId) {
-        case 'whatsapp':
-          endpoint = '/whatsapp/1/message/video';
+        case "whatsapp":
+          endpoint = "/whatsapp/1/message/video";
           payload = {
-            from: from || process.env['INFOBIP_WHATSAPP_FROM'],
+            from: from || process.env["INFOBIP_WHATSAPP_FROM"],
             to,
             content: {
               mediaUrl: message.mediaUrl,
               caption: message.caption,
-            }
+            },
           };
           break;
 
-        case 'viber':
-          endpoint = '/viber/2/messages';
+        case "viber":
+          endpoint = "/viber/2/messages";
           const viberMessage = message as ViberVideoMessage;
           payload = {
             messages: [
               {
-                sender: from || process.env['INFOBIP_VIBER_FROM'],
+                sender: from || process.env["INFOBIP_VIBER_FROM"],
                 destinations: [{ to }],
                 content: {
                   mediaUrl: viberMessage.mediaUrl,
                   text: viberMessage.caption,
-                  type: 'VIDEO',
+                  type: "VIDEO",
                   mediaDuration: viberMessage.duration,
-                  thumbnailUrl: viberMessage.thumbnailUrl
+                  thumbnailUrl: viberMessage.thumbnailUrl,
                 },
                 options: {
-                  label: 'TRANSACTIONAL',
+                  label: "TRANSACTIONAL",
                   applySessionRate: false,
-                  toPrimaryDeviceOnly: false
-                }
-              }
-            ]
+                  toPrimaryDeviceOnly: false,
+                },
+              },
+            ],
+          };
+          break;
+
+        case "rcs":
+          endpoint = "/rcs/2/messages";
+          const rcsMessage = message as RcsVideoMessage;
+          payload = {
+            messages: [
+              {
+                from: from || process.env["INFOBIP_RCS_FROM"],
+                to,
+                content: {
+                  type: "FILE",
+                  file: {
+                    url: rcsMessage.mediaUrl,
+                  },
+                  thumbnail: {
+                    url: rcsMessage.thumbnailUrl,
+                  },
+                },
+              },
+            ],
           };
           break;
 
         default:
-          throw new Error(`Unsupported channel for video message: ${channelId}`);
+          throw new Error(
+            `Unsupported channel for video message: ${channelId}`
+          );
       }
 
       const response = await this.client.post(endpoint, payload);

@@ -10,8 +10,8 @@ export class InfobipFileHandler extends BaseHandler<FileMessage> {
       let payload: any;
 
       switch (channelId) {
-        case 'whatsapp':
-          endpoint = '/whatsapp/1/message/document';
+        case "whatsapp":
+          endpoint = "/whatsapp/1/message/document";
           const whatsappMessage = message as WhatsappFileMessage;
           payload = {
             from: from || process.env["INFOBIP_WHATSAPP_FROM"],
@@ -24,26 +24,44 @@ export class InfobipFileHandler extends BaseHandler<FileMessage> {
           };
           break;
 
-        case 'viber':
-          endpoint = '/viber/2/messages';
+        case "viber":
+          endpoint = "/viber/2/messages";
           const viberMessage = message as ViberFileMessage;
           payload = {
             messages: [
               {
-                sender: from || process.env['INFOBIP_VIBER_FROM'],
+                sender: from || process.env["INFOBIP_VIBER_FROM"],
                 destinations: [{ to }],
                 content: {
-                  type: 'FILE',
+                  type: "FILE",
                   mediaUrl: viberMessage.mediaUrl,
-                  fileName: viberMessage.fileName
+                  fileName: viberMessage.fileName,
                 },
                 options: {
-                  label: 'TRANSACTIONAL',
+                  label: "TRANSACTIONAL",
                   applySessionRate: false,
-                  toPrimaryDeviceOnly: false
-                }
-              }
-            ]
+                  toPrimaryDeviceOnly: false,
+                },
+              },
+            ],
+          };
+          break;
+
+        case "rcs":
+          endpoint = "/rcs/2/messages";
+          payload = {
+            messages: [
+              {
+                from: from || process.env["INFOBIP_RCS_FROM"],
+                to,
+                content: {
+                  type: "FILE",
+                  file: {
+                    url: message.mediaUrl,
+                  },
+                },
+              },
+            ],
           };
           break;
 

@@ -18,10 +18,27 @@ export class InfobipAudioHandler extends BaseHandler<AudioMessage> {
         case "whatsapp":
           endpoint = "/whatsapp/1/message/audio";
           payload = {
-            from:
-              from || process.env["INFOBIP_WHATSAPP_FROM"],
+            from: from || process.env["INFOBIP_WHATSAPP_FROM"],
             to,
             content: { mediaUrl: message.mediaUrl },
+          };
+          break;
+
+        case "rcs":
+          endpoint = "/rcs/2/messages";
+          payload = {
+            messages: [
+              {
+                from: from || process.env["INFOBIP_RCS_FROM"],
+                to,
+                content: {
+                  type: "FILE",
+                  file: {
+                    url: message.mediaUrl,
+                  },
+                },
+              },
+            ],
           };
           break;
 

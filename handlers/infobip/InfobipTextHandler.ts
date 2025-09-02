@@ -10,50 +10,66 @@ export class InfobipTextHandler extends BaseHandler<TextMessage> {
       let payload: any;
 
       switch (channelId) {
-        case 'sms':
-          endpoint = '/sms/2/text/advanced';
+        case "sms":
+          endpoint = "/sms/2/text/advanced";
           payload = {
             messages: [
               {
                 destinations: [{ to }],
-                from: from || 'InfoSMS',
+                from: from || "InfoSMS",
                 text: message.text,
               },
             ],
           };
           break;
 
-        case 'whatsapp':
-          endpoint = '/whatsapp/1/message/text';
+        case "whatsapp":
+          endpoint = "/whatsapp/1/message/text";
           payload = {
-            from: from || process.env['INFOBIP_WHATSAPP_FROM'],
+            from: from || process.env["INFOBIP_WHATSAPP_FROM"],
             to,
             content: {
               text: message.text,
-              previewLink: message.text.includes('http'),
+              previewLink: message.text.includes("http"),
               urlOptions: {
-                removeProtocol: false
-              }
-            }
+                removeProtocol: false,
+              },
+            },
           };
           break;
 
-        case 'viber':
-          endpoint = '/viber/2/messages';
+        case "viber":
+          endpoint = "/viber/2/messages";
           payload = {
             messages: [
               {
-                sender: from || process.env['INFOBIP_VIBER_FROM'],
+                sender: from || process.env["INFOBIP_VIBER_FROM"],
                 destinations: [{ to }],
                 content: {
                   text: message.text,
-                  type: 'TEXT'
+                  type: "TEXT",
                 },
                 options: {
-                  label: 'TRANSACTIONAL',
+                  label: "TRANSACTIONAL",
                   applySessionRate: false,
-                  toPrimaryDeviceOnly: false
-                }
+                  toPrimaryDeviceOnly: false,
+                },
+              },
+            ],
+          };
+          break;
+
+        case "rcs":
+          endpoint = "/rcs/2/messages";
+          payload = {
+            messages: [
+              {
+                from: from || process.env["INFOBIP_RCS_FROM"],
+                to,
+                content: {
+                  text: message.text,
+                  type: "TEXT",
+                },
               },
             ],
           };

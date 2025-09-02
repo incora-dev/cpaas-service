@@ -43,9 +43,13 @@ export interface ViberVideoMessage extends BaseVideoMessage {
   duration: string;
 }
 
-export interface WhatsappVideoMessage extends BaseVideoMessage {}
+export interface WhatsappVideoMessage extends BaseVideoMessage { }
 
-export type VideoMessage = WhatsappVideoMessage | ViberVideoMessage;
+export interface RcsVideoMessage extends BaseVideoMessage {
+  thumbnailUrl?: string;
+}
+
+export type VideoMessage = WhatsappVideoMessage | ViberVideoMessage | RcsVideoMessage;
 
 export interface BaseFileMessage extends BaseMessage {
   type: 'file';
