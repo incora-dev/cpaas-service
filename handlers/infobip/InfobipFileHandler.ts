@@ -52,8 +52,8 @@ export class InfobipFileHandler extends BaseHandler<FileMessage> {
           payload = {
             messages: [
               {
-                from: from || process.env["INFOBIP_RCS_FROM"],
-                to,
+                sender: from || process.env["INFOBIP_RCS_FROM"],
+                destinations: [{ to }],
                 content: {
                   type: "FILE",
                   file: {

@@ -214,6 +214,17 @@ export interface ContactContent extends BaseMessageContent {
   contacts: Contact[];
 }
 
+export interface RichCardContent extends BaseMessageContent {
+  type: "card";
+  orientation: "HORIZONTAL" | "VERTICAL";
+  alignment: "LEFT" | "RIGHT";
+  title?: string;
+  description?: string;
+  mediaUrl: string;
+  thumbnailUrl?: string;
+  height: "SHORT" | "MEDIUM" | "TALL";
+}
+
 export type MessageContent =
   | TextContent
   | ImageContent
@@ -226,7 +237,8 @@ export type MessageContent =
   | AudioContent
   | OtpContent
   | LocationContent
-  | ContactContent;
+  | ContactContent
+  | RichCardContent;
 
 export interface UnifiedMessage {
   provider: MessageProvider;

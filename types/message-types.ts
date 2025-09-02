@@ -1,4 +1,4 @@
-export type MessageType = 'text' | 'image' | 'carousel' | 'video' | 'file' | 'list' | 'audio' | 'sticker' | 'otp' | 'location' | 'contact';
+export type MessageType = 'text' | 'image' | 'carousel' | 'video' | 'file' | 'list' | 'audio' | 'sticker' | 'otp' | 'location' | 'contact' | 'card';
 
 export interface Button {
   title: string;
@@ -211,6 +211,19 @@ export interface ContactMessage extends BaseMessage {
   entityId?: string;
   applicationId?: string;
 }
+
+export interface CardMessage extends BaseMessage {
+  type: "card";
+  orientation: "HORIZONTAL" | "VERTICAL";
+  alignment: "LEFT" | "RIGHT";
+  title?: string;
+  description?: string;
+  mediaUrl: string;
+  thumbnailUrl?: string;
+  height: "SHORT" | "MEDIUM" | "TALL";
+}
+
+
 
 
 

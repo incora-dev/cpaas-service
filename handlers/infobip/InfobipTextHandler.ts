@@ -64,8 +64,8 @@ export class InfobipTextHandler extends BaseHandler<TextMessage> {
           payload = {
             messages: [
               {
-                from: from || process.env["INFOBIP_RCS_FROM"],
-                to,
+                sender: from || process.env["INFOBIP_RCS_FROM"],
+                destinations: [{ to }],
                 content: {
                   text: message.text,
                   type: "TEXT",

@@ -8,4 +8,5 @@ export { InfobipAudioHandler } from './InfobipAudioHandler';
 export { InfobipStickerHandler } from './InfobipStickerHandler';
 export { InfobipOtpHandler } from './InfobipOtpHandler';
 export { InfobipLocationHandler } from './InfobipLocationHandler';
-export { InfobipContactHandler } from './InfobipContactHandler'
+export { InfobipContactHandler } from './InfobipContactHandler';
+export { InfobipCardHandler } from "./InfobipCardHandler"
