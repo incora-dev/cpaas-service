@@ -1,23 +1,9 @@
 import { BaseMessage } from "../general";
 
-export interface BaseVideoMessage extends BaseMessage {
+export interface VideoMessage extends BaseMessage {
   type: "video";
   mediaUrl: string;
-  caption?: string;
-}
-
-export interface ViberVideoMessage extends BaseVideoMessage {
+  caption: string;
   thumbnailUrl: string;
   duration: string;
 }
-
-export interface WhatsappVideoMessage extends BaseVideoMessage {}
-
-export interface RcsVideoMessage extends BaseVideoMessage {
-  thumbnailUrl?: string;
-}
-
-export type VideoMessage =
-  | WhatsappVideoMessage
-  | ViberVideoMessage
-  | RcsVideoMessage;

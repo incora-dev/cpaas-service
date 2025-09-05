@@ -54,8 +54,4 @@ export interface Contact {
 export interface ContactMessage extends BaseMessage {
   type: "contact";
   contacts: Contact[];
-  callbackData?: string;
-  notifyUrl?: string;
-  entityId?: string;
-  applicationId?: string;
 }

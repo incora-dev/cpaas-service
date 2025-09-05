@@ -1,7 +1,5 @@
 import {
-  FileMessage,
-  ViberFileMessage,
-  WhatsappFileMessage,
+  FileMessage
 } from "../../types/messages/file-types";
 import { BaseHandler } from "../BaseHandler";
 
@@ -21,21 +19,18 @@ export class InfobipFileHandler extends BaseHandler<FileMessage> {
       switch (channelId) {
         case "whatsapp":
           endpoint = "/whatsapp/1/message/document";
-          const whatsappMessage = message as WhatsappFileMessage;
           payload = {
             from: from || process.env["INFOBIP_WHATSAPP_FROM"],
             to,
             content: {
-              mediaUrl: whatsappMessage.mediaUrl,
-              caption: whatsappMessage.caption,
-              filename: whatsappMessage.filename,
+              mediaUrl: message.mediaUrl,
+              filename: message.filename,
             },
           };
           break;
 
         case "viber":
           endpoint = "/viber/2/messages";
-          const viberMessage = message as ViberFileMessage;
           payload = {
             messages: [
               {
@@ -43,8 +38,8 @@ export class InfobipFileHandler extends BaseHandler<FileMessage> {
                 destinations: [{ to }],
                 content: {
                   type: "FILE",
-                  mediaUrl: viberMessage.mediaUrl,
-                  fileName: viberMessage.fileName,
+                  mediaUrl: message.mediaUrl,
+                  fileName: message.filename,
                 },
                 options: {
                   label: "TRANSACTIONAL",
