@@ -112,3 +112,5 @@ temp/
 
 # Local development
 .local/ 
+
+server.ts

@@ -1,28 +1,8 @@
 import { BaseMessage } from "../general";
 
-export interface BaseListMessage extends BaseMessage {
+export interface ListMessage extends BaseMessage {
   type: "list";
   text: string;
-}
-
-export interface ViberListMessage extends BaseListMessage {
+  actionTitle: string;
   options: string[];
 }
-
-export interface WhatsAppListRow {
-  id: string;
-  title: string;
-  description?: string;
-}
-
-export interface WhatsAppListSection {
-  title?: string;
-  rows: WhatsAppListRow[];
-}
-
-export interface WhatsAppListMessage extends BaseListMessage {
-  actionTitle: string; // Button name
-  sections: WhatsAppListSection[];
-}
-
-export type ListMessage = ViberListMessage | WhatsAppListMessage;

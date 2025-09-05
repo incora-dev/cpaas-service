@@ -1,8 +1,5 @@
-import {
-  ListMessage,
-  WhatsAppListMessage,
-  ViberListMessage,
-} from "../../types/messages/list-types";
+import { v4 as uuidv4 } from "uuid"; 
+import { ListMessage } from "../../types/messages/list-types";
 import { BaseHandler } from "../BaseHandler";
 
 export class InfobipListHandler extends BaseHandler<ListMessage> {
@@ -21,7 +18,6 @@ export class InfobipListHandler extends BaseHandler<ListMessage> {
       switch (channelId) {
         case "viber":
           endpoint = "/viber/2/messages";
-          const viberMessage = message as ViberListMessage;
           payload = {
             messages: [
               {
@@ -30,7 +26,7 @@ export class InfobipListHandler extends BaseHandler<ListMessage> {
                 content: {
                   type: "LIST",
                   text: message.text,
-                  options: viberMessage.options,
+                  options: message.options,
                 },
                 options: {
                   label: "TRANSACTIONAL",
@@ -44,17 +40,26 @@ export class InfobipListHandler extends BaseHandler<ListMessage> {
 
         case "whatsapp":
           endpoint = "/whatsapp/1/message/interactive/list";
-          const whatsappMessage = message as WhatsAppListMessage;
+
+          const sections = [
+            {
+              rows: (message.options || []).map((opt) => ({
+                id: uuidv4(), 
+                title: opt, 
+              })),
+            },
+          ];
+
           payload = {
             from: from || process.env["INFOBIP_WHATSAPP_FROM"],
             to,
             content: {
               body: {
-                text: whatsappMessage.text,
+                text: message.text,
               },
               action: {
-                title: whatsappMessage.actionTitle,
-                sections: whatsappMessage.sections,
+                title: message.actionTitle,
+                sections,
               },
             },
           };

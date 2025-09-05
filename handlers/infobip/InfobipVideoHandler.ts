@@ -1,7 +1,5 @@
 import {
-  ViberVideoMessage,
   VideoMessage,
-  RcsVideoMessage,
 } from "../../types/messages/video-types";
 import { BaseHandler } from "../BaseHandler";
 
@@ -33,18 +31,17 @@ export class InfobipVideoHandler extends BaseHandler<VideoMessage> {
 
         case "viber":
           endpoint = "/viber/2/messages";
-          const viberMessage = message as ViberVideoMessage;
           payload = {
             messages: [
               {
                 sender: from || process.env["INFOBIP_VIBER_FROM"],
                 destinations: [{ to }],
                 content: {
-                  mediaUrl: viberMessage.mediaUrl,
-                  text: viberMessage.caption,
+                  mediaUrl: message.mediaUrl,
+                  text: message.caption,
                   type: "VIDEO",
-                  mediaDuration: viberMessage.duration,
-                  thumbnailUrl: viberMessage.thumbnailUrl,
+                  mediaDuration: message.duration,
+                  thumbnailUrl: message.thumbnailUrl,
                 },
                 options: {
                   label: "TRANSACTIONAL",
@@ -58,7 +55,6 @@ export class InfobipVideoHandler extends BaseHandler<VideoMessage> {
 
         case "rcs":
           endpoint = "/rcs/2/messages";
-          const rcsMessage = message as RcsVideoMessage;
           payload = {
             messages: [
               {
@@ -67,10 +63,10 @@ export class InfobipVideoHandler extends BaseHandler<VideoMessage> {
                 content: {
                   type: "FILE",
                   file: {
-                    url: rcsMessage.mediaUrl,
+                    url: message.mediaUrl,
                   },
                   thumbnail: {
-                    url: rcsMessage.thumbnailUrl,
+                    url: message.thumbnailUrl,
                   },
                 },
               },

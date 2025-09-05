@@ -1,7 +1,5 @@
 import {
   CarouselMessage,
-  ViberCarouselMessage,
-  RcsCarouselMessage,
 } from "../../types/messages/carousel-types";
 import { BaseHandler } from "../BaseHandler";
 
@@ -21,8 +19,7 @@ export class InfobipCarouselHandler extends BaseHandler<CarouselMessage> {
       switch (channelId) {
         case "viber":
           endpoint = "/viber/2/messages";
-          const viberMessage = message as ViberCarouselMessage;
-          const cards = viberMessage.items.map((item) => ({
+          const cards = message.items.map((item) => ({
             text: item.title,
             mediaUrl: item.mediaUrl,
             description: item.description,
@@ -35,7 +32,7 @@ export class InfobipCarouselHandler extends BaseHandler<CarouselMessage> {
                 sender: from || process.env["INFOBIP_VIBER_FROM"],
                 destinations: [{ to }],
                 content: {
-                  text: "Check out these options:",
+                  text: message.text,
                   type: "CAROUSEL",
                   cards,
                 },
@@ -51,15 +48,13 @@ export class InfobipCarouselHandler extends BaseHandler<CarouselMessage> {
 
         case "rcs":
           endpoint = "/rcs/2/messages";
-          const rcsMessage = message as RcsCarouselMessage;
-          const rcsCards = rcsMessage.items.map((item) => ({
+          const rcsCards = message.items.map((item) => ({
             title: item.title,
             description: item.description,
             media: {
               file: {
                 url: item.mediaUrl,
               },
-              thumbnail: { url: item.thumbnailUrl },
               height: item.height,
             },
           }));
@@ -71,7 +66,7 @@ export class InfobipCarouselHandler extends BaseHandler<CarouselMessage> {
                 destinations: [{ to }],
                 content: {
                   type: "CAROUSEL",
-                  cardWidth: rcsMessage.cardWidth,
+                  cardWidth: message.cardWidth,
                   contents: rcsCards,
                 },
               },
