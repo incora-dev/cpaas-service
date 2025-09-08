@@ -22,7 +22,6 @@ export class InfobipCarouselHandler extends BaseHandler<CarouselMessage> {
           const cards = message.items.map((item) => ({
             text: item.title,
             mediaUrl: item.mediaUrl,
-            description: item.description,
             buttons: item.buttons,
           }));
 
@@ -34,7 +33,7 @@ export class InfobipCarouselHandler extends BaseHandler<CarouselMessage> {
                 content: {
                   text: message.text,
                   type: "CAROUSEL",
-                  cards,
+                  cards: cards,
                 },
                 options: {
                   label: "TRANSACTIONAL",
