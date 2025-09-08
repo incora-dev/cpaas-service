@@ -1,6 +1,6 @@
 import { InfobipProvider, InfobipConfig } from "./providers/InfobipProvider";
-import { ProviderFactory, ProviderConfig } from "./providers/ProviderFactory";
-import { TextMessage } from "./types/messages/text-types";
+// import { ProviderFactory, ProviderConfig } from "./providers/ProviderFactory";
+// import { TextMessage } from "./types/messages/text-types";
 // import { ImageMessage } from "./types/messages/image-types";
 // import { CarouselMessage } from "./types/messages/carousel-types";
 // import { VideoMessage } from "./types/messages/video-types";
@@ -195,10 +195,10 @@ async function main() {
     //   "whatsapp",
     //   {
     //     type: "audio",
-    //     mediaUrl: "https://samplelib.com/lib/preview/mp4/sample-5s.mp4",
-    //     messageId: "123e4567-e89b-12d3-a456-426614174000",
+    //     mediaUrl:
+    //       "https://incora-uploads.s3.us-east-1.amazonaws.com/sample4.aac",
     //   } as AudioMessage,
-    //   "380976115062"
+    //   "380669858174"
     // );
     // await infobipProvider.send(
     //   "whatsapp",
@@ -214,14 +214,13 @@ async function main() {
     //   "viber",
     //   {
     //     type: "otp",
-    //     templateId: "426614174000",
+    //     templateId: "205000000003303",
     //     parameters: {
     //       code: "123456",
-    //       expiry: "5 minutes",
     //     },
     //     language: "ENGLISH",
     //   } as OtpMessage,
-    //   "380976115062"
+    //   "380669858174"
     // );
     // await infobipProvider.send(
     //   "whatsapp",
@@ -314,21 +313,21 @@ async function main() {
     console.error("Error with provider-specific channels:", error);
   }
 
-  const providerConfig: ProviderConfig = {
-    infobip: infobipConfig,
-  };
+  // const providerConfig: ProviderConfig = {
+  //   infobip: infobipConfig,
+  // };
 
-  const infobipProviderFromFactory = ProviderFactory.createProvider(
-    "infobip",
-    providerConfig
-  );
+  // const infobipProviderFromFactory = ProviderFactory.createProvider(
+  //   "infobip",
+  //   providerConfig
+  // );
 
   try {
-    await infobipProviderFromFactory.send(
-      "viber",
-      { type: "text", text: "Hello from Factory Infobip" } as TextMessage,
-      "380976115062"
-    );
+    // await infobipProviderFromFactory.send(
+    //   "viber",
+    //   { type: "text", text: "Hello from Factory Infobip" } as TextMessage,
+    //   "380976115062"
+    // );
     console.log("Factory provider messages sent successfully!");
   } catch (error) {
     console.error("Error with factory provider:", error);

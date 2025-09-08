@@ -36,7 +36,7 @@ export class InfobipImageHandler extends BaseHandler<ImageMessage> {
                 destinations: [{ to }],
                 content: {
                   mediaUrl: message.mediaUrl,
-                  caption: message.caption,
+                  text: message.caption,
                   type: "IMAGE",
                 },
                 options: {
