@@ -7,38 +7,41 @@ export class InfobipStickerHandler extends BaseHandler<StickerMessage> {
   async send(
     message: StickerMessage,
     channelId: string,
-    to: string,
+    to: string | string[],
     from?: string
   ): Promise<void> {
     try {
-      let endpoint: string;
-      let payload: any;
+      const recipients = Array.isArray(to) ? to : [to];
 
       switch (channelId) {
-        case "whatsapp":
-          endpoint = "/whatsapp/1/message/sticker";
-          payload = {
-            from: from || process.env["INFOBIP_WHATSAPP_FROM"],
-            to,
-            content: { mediaUrl: message.mediaUrl },
-          };
+        case "whatsapp": {
+          const endpoint = "/whatsapp/1/message/sticker";
+
+          for (const recipient of recipients) {
+            const payload = {
+              from: from || process.env["INFOBIP_WHATSAPP_FROM"],
+              to: recipient,
+              content: { mediaUrl: message.mediaUrl },
+            };
+
+            const response = await this.client.post(endpoint, payload);
+            console.log(
+              `[whatsapp] Infobip sticker message sent successfully to ${recipient}:`,
+              response.data
+            );
+          }
           break;
+        }
 
         default:
           throw new Error(
             `Unsupported channel for sticker message: ${channelId}`
           );
       }
-
-      const response = await this.client.post(endpoint, payload);
-      console.log(
-        `[${channelId}] Infobip sticker message sent successfully:`,
-        response.data
-      );
     } catch (error: any) {
       console.error(
         `[${channelId}] Error sending Infobip sticker message:`,
-        error
+        error.response?.data || error
       );
       throw error;
     }

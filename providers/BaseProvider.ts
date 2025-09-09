@@ -11,7 +11,7 @@ export abstract class BaseProvider {
   async send(
     channelId: string,
     message: BaseMessage,
-    to: string,
+    to: string | string[],
     from?: string
   ) {
     const channel = this.channels.get(channelId);

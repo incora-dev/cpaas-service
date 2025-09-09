@@ -7,30 +7,39 @@ export class InfobipAudioHandler extends BaseHandler<AudioMessage> {
   async send(
     message: AudioMessage,
     channelId: string,
-    to: string,
+    to: string | string[],
     from?: string
   ): Promise<void> {
     try {
-      let endpoint: string;
-      let payload: any;
+      const recipients = Array.isArray(to) ? to : [to];
 
       switch (channelId) {
-        case "whatsapp":
-          endpoint = "/whatsapp/1/message/audio";
-          payload = {
-            from: from || process.env["INFOBIP_WHATSAPP_FROM"],
-            to,
-            content: { mediaUrl: message.mediaUrl },
-          };
-          break;
+        case "whatsapp": {
+          const endpoint = "/whatsapp/1/message/audio";
 
-        case "rcs":
-          endpoint = "/rcs/2/messages";
-          payload = {
+          for (const recipient of recipients) {
+            const payload = {
+              from: from || process.env["INFOBIP_WHATSAPP_FROM"],
+              to: recipient,
+              content: { mediaUrl: message.mediaUrl },
+            };
+
+            const response = await this.client.post(endpoint, payload);
+            console.log(
+              `[whatsapp] Infobip audio message sent successfully to ${recipient}:`,
+              response.data
+            );
+          }
+          break;
+        }
+
+        case "rcs": {
+          const endpoint = "/rcs/2/messages";
+          const payload = {
             messages: [
               {
                 sender: from || process.env["INFOBIP_RCS_FROM"],
-                destinations: [{ to }],
+                destinations: recipients.map((r) => ({ to: r })),
                 content: {
                   type: "FILE",
                   file: {
@@ -40,19 +49,20 @@ export class InfobipAudioHandler extends BaseHandler<AudioMessage> {
               },
             ],
           };
+
+          const response = await this.client.post(endpoint, payload);
+          console.log(
+            `[rcs] Infobip audio message sent successfully:`,
+            response.data
+          );
           break;
+        }
 
         default:
           throw new Error(
             `Unsupported channel for audio message: ${channelId}`
           );
       }
-
-      const response = await this.client.post(endpoint, payload);
-      console.log(
-        `[${channelId}] Infobip audio message sent successfully:`,
-        response.data
-      );
     } catch (error: any) {
       console.error(
         `[${channelId}] Error sending Infobip audio message:`,

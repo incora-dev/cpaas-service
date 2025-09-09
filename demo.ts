@@ -1,17 +1,17 @@
 import { InfobipProvider, InfobipConfig } from "./providers/InfobipProvider";
 // import { ProviderFactory, ProviderConfig } from "./providers/ProviderFactory";
-// import { TextMessage } from "./types/messages/text-types";
-// import { ImageMessage } from "./types/messages/image-types";
-// import { CarouselMessage } from "./types/messages/carousel-types";
-// import { VideoMessage } from "./types/messages/video-types";
-// import { FileMessage } from "./types/messages/file-types";
-// import { ListMessage } from "./types/messages/list-types";
-// import { AudioMessage } from "./types/messages/audio-types";
-// import { StickerMessage } from "./types/messages/sticker-types";
-// import { OtpMessage } from "./types/messages/otp-types";
-// import { LocationMessage } from "./types/messages/location-types";
-// import { ContactMessage } from "./types/messages/contact-types";
-// import { TwoFAMessage } from "./types/messages/2fa-types";
+import { TextMessage } from "./types/messages/text-types";
+import { ImageMessage } from "./types/messages/image-types";
+import { CarouselMessage } from "./types/messages/carousel-types";
+import { VideoMessage } from "./types/messages/video-types";
+import { FileMessage } from "./types/messages/file-types";
+import { ListMessage } from "./types/messages/list-types";
+import { AudioMessage } from "./types/messages/audio-types";
+import { StickerMessage } from "./types/messages/sticker-types";
+import { OtpMessage } from "./types/messages/otp-types";
+import { LocationMessage } from "./types/messages/location-types";
+import { ContactMessage } from "./types/messages/contact-types";
+import { TwoFAMessage } from "./types/messages/2fa-types";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -30,295 +30,297 @@ async function main() {
   const infobipProvider = new InfobipProvider(infobipConfig);
 
   try {
-    // await infobipProvider.send(
-    //   "viber",
-    //   { type: "text", text: "Hello from Infobip Viber" } as TextMessage,
-    //   "380976115062"
-    // );
-    // await infobipProvider.send(
-    //   "sms",
-    //   { type: "text", text: "Hello from Infobip SMS" } as TextMessage,
-    //   "380976115062"
-    // );
-    // await infobipProvider.send(
-    //   "whatsapp",
-    //   { type: "text", text: "Hello from Infobip WhatsApp" } as TextMessage,
-    //   "380976115062"
-    // );
-    // await infobipProvider.send(
-    //   "viber",
-    //   {
-    //     type: "image",
-    //     mediaUrl:
-    //       "https://cdn.britannica.com/34/235834-050-C5843610/two-different-breeds-of-cats-side-by-side-outdoors-in-the-garden.jpg",
-    //     caption: "Nice cats",
-    //   } as ImageMessage,
-    //   "380976115062"
-    // );
-    // await infobipProvider.send(
-    //   "whatsapp",
-    //   {
-    //     type: "image",
-    //     mediaUrl:
-    //       "https://cdn.britannica.com/34/235834-050-C5843610/two-different-breeds-of-cats-side-by-side-outdoors-in-the-garden.jpg",
-    //     caption: "Nice cats",
-    //   } as ImageMessage,
-    //   "380976115062"
-    // );
-    // await infobipProvider.send(
-    //   "viber",
-    //   {
-    //     type: "carousel",
-    //     items: [
-    //       {
-    //         title: "Cat 1",
-    //         description: "Beautiful cat 1",
-    //         mediaUrl:
-    //           "https://images.unsplash.com/photo-1578680632090-5933d7784c7b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    //         buttons: [
-    //           {
-    //             title: "Like",
-    //             action:
-    //               "https://images.unsplash.com/photo-1578680632090-5933d7784c7b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    //           },
-    //           {
-    //             title: "Share",
-    //             action:
-    //               "https://images.unsplash.com/photo-1578680632090-5933d7784c7b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    //           },
-    //         ],
-    //       },
-    //       {
-    //         title: "Cat 2",
-    //         description: "Beautiful cat 2",
-    //         mediaUrl:
-    //           "https://images.unsplash.com/photo-1558011958-c3bc18a2e393?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    //         buttons: [
-    //           {
-    //             title: "Like",
-    //             action:
-    //               "https://images.unsplash.com/photo-1558011958-c3bc18a2e393?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    //           },
-    //           {
-    //             title: "Share",
-    //             action:
-    //               "https://images.unsplash.com/photo-1558011958-c3bc18a2e393?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    //           },
-    //         ],
-    //       },
-    //       {
-    //         title: "Cat 3",
-    //         description: "Beautiful cat 3",
-    //         mediaUrl:
-    //           "https://images.unsplash.com/photo-1716467891152-1b43a96de578?q=80&w=2081&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    //         buttons: [
-    //           {
-    //             title: "Like",
-    //             action:
-    //               "https://images.unsplash.com/photo-1716467891152-1b43a96de578?q=80&w=2081&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    //           },
-    //           {
-    //             title: "Share",
-    //             action:
-    //               "https://images.unsplash.com/photo-1716467891152-1b43a96de578?q=80&w=2081&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    //           },
-    //         ],
-    //       },
-    //     ],
-    //   } as CarouselMessage,
-    //   "380976115062"
-    // );
-    // await infobipProvider.send(
-    //   "whatsapp",
-    //   {
-    //     type: "video",
-    //     mediaUrl: "https://samplelib.com/lib/preview/mp4/sample-5s.mp4",
-    //     caption: "Hello WhatsApp!",
-    //     thumbnailUrl:
-    //       "https://cdn.britannica.com/34/235834-050-C5843610/two-different-breeds-of-cats-side-by-side-outdoors-in-the-garden.jpg",
-    //     duration: "PT30S",
-    //   } as VideoMessage,
-    //   "380976115062"
-    // );
-    // await infobipProvider.send(
-    //   "viber",
-    //   {
-    //     type: "video",
-    //     mediaUrl: "https://samplelib.com/lib/preview/mp4/sample-5s.mp4",
-    //     caption: "Hello Viber!",
-    //     thumbnailUrl:
-    //       "https://cdn.britannica.com/34/235834-050-C5843610/two-different-breeds-of-cats-side-by-side-outdoors-in-the-garden.jpg",
-    //     duration: "PT30S",
-    //   } as VideoMessage,
-    //   "380976115062"
-    // );
-    // await infobipProvider.send(
-    //   "whatsapp",
-    //   {
-    //     type: "file",
-    //     mediaUrl:
-    //       "https://raw.githubusercontent.com/cyb70289/utf8/master/UTF-8-demo.txt",
-    //     filename: "test.txt",
-    //   } as FileMessage,
-    //   "380976115062"
-    // );
-    // await infobipProvider.send(
-    //   "viber",
-    //   {
-    //     type: "file",
-    //     mediaUrl:
-    //       "https://raw.githubusercontent.com/cyb70289/utf8/master/UTF-8-demo.txt",
-    //     filename: "test.txt",
-    //   } as FileMessage,
-    //   "380976115062"
-    // );
-    // await infobipProvider.send(
-    //   "viber",
-    //   {
-    //     type: "list",
-    //     text: "Choose one:",
-    //     actionTitle: "Pick option",
-    //     options: ["Option 1", "Option 2", "Option 3"],
-    //   } as ListMessage,
-    //   "380976115062"
-    // );
-    // await infobipProvider.send(
-    //   "whatsapp",
-    //   {
-    //     type: "list",
-    //     text: "Choose one:",
-    //     actionTitle: "Pick option",
-    //     options: ["Option 1", "Option 2", "Option 3"],
-    //   } as ListMessage,
-    //   "380976115062"
-    // );
-    // await infobipProvider.send(
-    //   "whatsapp",
-    //   {
-    //     type: "audio",
-    //     mediaUrl:
-    //       "https://incora-uploads.s3.us-east-1.amazonaws.com/sample4.aac",
-    //   } as AudioMessage,
-    //   "380669858174"
-    // );
-    // await infobipProvider.send(
-    //   "whatsapp",
-    //   {
-    //     type: "sticker",
-    //     mediaUrl:
-    //       "https://cdn.promptden.com/images/528b3840-0144-4e95-ad94-45f14754ad0e.webp",
-    //     messageId: "123e4567-e89b-12d3-a456-426614174000",
-    //   } as StickerMessage,
-    //   "380976115062"
-    // );
-    // await infobipProvider.send(
-    //   "viber",
-    //   {
-    //     type: "otp",
-    //     templateId: "205000000003303",
-    //     parameters: {
-    //       code: "123456",
-    //     },
-    //     language: "ENGLISH",
-    //   } as OtpMessage,
-    //   "380669858174"
-    // );
-    // await infobipProvider.send(
-    //   "whatsapp",
-    //   {
-    //     type: "location",
-    //     latitude: 44.9526862,
-    //     longitude: 13.8545217,
-    //     name: "Seaside Park",
-    //     address: "123 Ocean Drive, Dubrovnik, Croatia",
-    //   } as LocationMessage,
-    //   "380976115062"
-    // );
-    // await infobipProvider.send(
-    //   "whatsapp",
-    //   {
-    //     type: "contact",
-    //     contacts: [
-    //       {
-    //         addresses: [
-    //           {
-    //             street: "Istarska",
-    //             city: "Vodnjan",
-    //             zip: "52215",
-    //             country: "Croatia",
-    //             countryCode: "HR",
-    //             type: "WORK",
-    //           },
-    //           {
-    //             street: "Istarska",
-    //             city: "Vodnjan",
-    //             zip: "52215",
-    //             country: "Croatia",
-    //             countryCode: "HR",
-    //             type: "HOME",
-    //           },
-    //         ],
-    //         birthday: "2010-01-01",
-    //         emails: [
-    //           {
-    //             email: "John.Smith@example.com",
-    //             type: "WORK",
-    //           },
-    //           {
-    //             email: "John.Smith.priv@example.com",
-    //             type: "HOME",
-    //           },
-    //         ],
-    //         name: {
-    //           firstName: "John",
-    //           lastName: "Smith",
-    //           middleName: "B",
-    //           namePrefix: "Mr.",
-    //           formattedName: "Mr. John Smith",
-    //         },
-    //         org: {
-    //           company: "Company Name",
-    //           department: "Department",
-    //           title: "Director",
-    //         },
-    //         phones: [
-    //           {
-    //             phone: "+441134960019",
-    //             type: "HOME",
-    //             waId: "441134960019",
-    //           },
-    //           {
-    //             phone: "+441134960000",
-    //             type: "WORK",
-    //             waId: "441134960000",
-    //           },
-    //         ],
-    //         urls: [
-    //           {
-    //             url: "http://example.com/John.Smith",
-    //             type: "WORK",
-    //           },
-    //           {
-    //             url: "http://example.com/home/John.Smith",
-    //             type: "HOME",
-    //           },
-    //         ],
-    //       },
-    //     ],
-    //   } as ContactMessage,
-    //   "380976115062"
-    // );
-    // await infobipProvider.send(
-    //   "sms",
-    //   {
-    //     type: "2fa",
-    //     placeholders: {
-    //       firstName: "John",
-    //       lastName: "Doe",
-    //     },
-    //   } as TwoFAMessage,
-    //   "380669858174"
-    // );
+   await infobipProvider.send(
+     "viber",
+     { type: "text", text: "Hello from Infobip Viber" } as TextMessage,
+     ["380982408063", "380669858174"]
+   );
+
+   await infobipProvider.send(
+     "sms",
+     { type: "text", text: "Hello from Infobip SMS" } as TextMessage,
+     ["380982408063", "380669858174"]
+   );
+
+   await infobipProvider.send(
+     "whatsapp",
+     { type: "text", text: "Hello from Infobip WhatsApp" } as TextMessage,
+     ["380982408063", "380669858174"]
+   );
+    await infobipProvider.send(
+      "viber",
+      {
+        type: "image",
+        mediaUrl:
+          "https://cdn.britannica.com/34/235834-050-C5843610/two-different-breeds-of-cats-side-by-side-outdoors-in-the-garden.jpg",
+        caption: "Nice cats",
+      } as ImageMessage,
+      ["380982408063", "380669858174"]
+    );
+    await infobipProvider.send(
+      "whatsapp",
+      {
+        type: "image",
+        mediaUrl:
+          "https://cdn.britannica.com/34/235834-050-C5843610/two-different-breeds-of-cats-side-by-side-outdoors-in-the-garden.jpg",
+        caption: "Nice cats",
+      } as ImageMessage,
+      ["380982408063", "380669858174"]
+    );
+    await infobipProvider.send(
+      "viber",
+      {
+        type: "carousel",
+        items: [
+          {
+            title: "Cat 1",
+            description: "Beautiful cat 1",
+            mediaUrl:
+              "https://images.unsplash.com/photo-1578680632090-5933d7784c7b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            buttons: [
+              {
+                title: "Like",
+                action:
+                  "https://images.unsplash.com/photo-1578680632090-5933d7784c7b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              },
+              {
+                title: "Share",
+                action:
+                  "https://images.unsplash.com/photo-1578680632090-5933d7784c7b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              },
+            ],
+          },
+          {
+            title: "Cat 2",
+            description: "Beautiful cat 2",
+            mediaUrl:
+              "https://images.unsplash.com/photo-1558011958-c3bc18a2e393?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            buttons: [
+              {
+                title: "Like",
+                action:
+                  "https://images.unsplash.com/photo-1558011958-c3bc18a2e393?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              },
+              {
+                title: "Share",
+                action:
+                  "https://images.unsplash.com/photo-1558011958-c3bc18a2e393?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              },
+            ],
+          },
+          {
+            title: "Cat 3",
+            description: "Beautiful cat 3",
+            mediaUrl:
+              "https://images.unsplash.com/photo-1716467891152-1b43a96de578?q=80&w=2081&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            buttons: [
+              {
+                title: "Like",
+                action:
+                  "https://images.unsplash.com/photo-1716467891152-1b43a96de578?q=80&w=2081&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              },
+              {
+                title: "Share",
+                action:
+                  "https://images.unsplash.com/photo-1716467891152-1b43a96de578?q=80&w=2081&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              },
+            ],
+          },
+        ],
+      } as CarouselMessage,
+      ["380982408063", "380669858174"]
+    );
+    await infobipProvider.send(
+      "whatsapp",
+      {
+        type: "video",
+        mediaUrl: "https://samplelib.com/lib/preview/mp4/sample-5s.mp4",
+        caption: "Hello WhatsApp!",
+        thumbnailUrl:
+          "https://cdn.britannica.com/34/235834-050-C5843610/two-different-breeds-of-cats-side-by-side-outdoors-in-the-garden.jpg",
+        duration: "PT30S",
+      } as VideoMessage,
+      ["380982408063", "380669858174"]
+    );
+    await infobipProvider.send(
+      "viber",
+      {
+        type: "video",
+        mediaUrl: "https://samplelib.com/lib/preview/mp4/sample-5s.mp4",
+        caption: "Hello Viber!",
+        thumbnailUrl:
+          "https://cdn.britannica.com/34/235834-050-C5843610/two-different-breeds-of-cats-side-by-side-outdoors-in-the-garden.jpg",
+        duration: "PT30S",
+      } as VideoMessage,
+      ["380982408063", "380669858174"]
+    );
+    await infobipProvider.send(
+      "whatsapp",
+      {
+        type: "file",
+        mediaUrl:
+          "https://raw.githubusercontent.com/cyb70289/utf8/master/UTF-8-demo.txt",
+        filename: "test.txt",
+      } as FileMessage,
+      ["380982408063", "380669858174"]
+    );
+    await infobipProvider.send(
+      "viber",
+      {
+        type: "file",
+        mediaUrl:
+          "https://raw.githubusercontent.com/cyb70289/utf8/master/UTF-8-demo.txt",
+        filename: "test.txt",
+      } as FileMessage,
+      ["380982408063", "380669858174"]
+    );
+    await infobipProvider.send(
+      "viber",
+      {
+        type: "list",
+        text: "Choose one:",
+        actionTitle: "Pick option",
+        options: ["Option 1", "Option 2", "Option 3"],
+      } as ListMessage,
+      ["380982408063", "380669858174"]
+    );
+    await infobipProvider.send(
+      "whatsapp",
+      {
+        type: "list",
+        text: "Choose one:",
+        actionTitle: "Pick option",
+        options: ["Option 1", "Option 2", "Option 3"],
+      } as ListMessage,
+      ["380982408063", "380669858174"]
+    );
+    await infobipProvider.send(
+      "whatsapp",
+      {
+        type: "audio",
+        mediaUrl:
+          "https://incora-uploads.s3.us-east-1.amazonaws.com/sample4.aac",
+      } as AudioMessage,
+      ["380982408063", "380669858174"]
+    );
+    await infobipProvider.send(
+      "whatsapp",
+      {
+        type: "sticker",
+        mediaUrl:
+          "https://cdn.promptden.com/images/528b3840-0144-4e95-ad94-45f14754ad0e.webp",
+        messageId: "123e4567-e89b-12d3-a456-426614174000",
+      } as StickerMessage,
+      ["380982408063", "380669858174"]
+    );
+    await infobipProvider.send(
+      "viber",
+      {
+        type: "otp",
+        templateId: "205000000003303",
+        parameters: {
+          code: "123456",
+        },
+        language: "ENGLISH",
+      } as OtpMessage,
+      "380669858174"
+    );
+    await infobipProvider.send(
+      "whatsapp",
+      {
+        type: "location",
+        latitude: 44.9526862,
+        longitude: 13.8545217,
+        name: "Seaside Park",
+        address: "123 Ocean Drive, Dubrovnik, Croatia",
+      } as LocationMessage,
+      ["380982408063", "380669858174"]
+    );
+    await infobipProvider.send(
+      "whatsapp",
+      {
+        type: "contact",
+        contacts: [
+          {
+            addresses: [
+              {
+                street: "Istarska",
+                city: "Vodnjan",
+                zip: "52215",
+                country: "Croatia",
+                countryCode: "HR",
+                type: "WORK",
+              },
+              {
+                street: "Istarska",
+                city: "Vodnjan",
+                zip: "52215",
+                country: "Croatia",
+                countryCode: "HR",
+                type: "HOME",
+              },
+            ],
+            birthday: "2010-01-01",
+            emails: [
+              {
+                email: "John.Smith@example.com",
+                type: "WORK",
+              },
+              {
+                email: "John.Smith.priv@example.com",
+                type: "HOME",
+              },
+            ],
+            name: {
+              firstName: "John",
+              lastName: "Smith",
+              middleName: "B",
+              namePrefix: "Mr.",
+              formattedName: "Mr. John Smith",
+            },
+            org: {
+              company: "Company Name",
+              department: "Department",
+              title: "Director",
+            },
+            phones: [
+              {
+                phone: "+441134960019",
+                type: "HOME",
+                waId: "441134960019",
+              },
+              {
+                phone: "+441134960000",
+                type: "WORK",
+                waId: "441134960000",
+              },
+            ],
+            urls: [
+              {
+                url: "http://example.com/John.Smith",
+                type: "WORK",
+              },
+              {
+                url: "http://example.com/home/John.Smith",
+                type: "HOME",
+              },
+            ],
+          },
+        ],
+      } as ContactMessage,
+      ["380982408063", "380669858174"]
+    );
+    await infobipProvider.send(
+      "sms",
+      {
+        type: "2fa",
+        placeholders: {
+          firstName: "John",
+          lastName: "Doe",
+        },
+      } as TwoFAMessage,
+      ["380982408063", "380669858174"]
+    );
 
     console.log("Provider-specific channel messages sent successfully!");
   } catch (error) {
