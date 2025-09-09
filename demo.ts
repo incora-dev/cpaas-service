@@ -1,8 +1,9 @@
-import { InfobipProvider, InfobipConfig } from "./providers/InfobipProvider";
-import { ProviderFactory, ProviderConfig } from "./providers/ProviderFactory";
+import { ProviderFactory } from "./providers/ProviderFactory";
+import { DynamoDBConfigService } from "./services/DynamoDBConfigService";
+import { MarketContext } from "./types/dynamodb-config.types";
 import { TextMessage } from "./types/messages/text-types";
 // import { ImageMessage } from "./types/messages/image-types";
-// import { CarouselMessage } from "./types/messages/carousel-types";
+import { CarouselMessage } from "./types/messages/carousel-types";
 // import { VideoMessage } from "./types/messages/video-types";
 // import { FileMessage } from "./types/messages/file-types";
 // import { ListMessage } from "./types/messages/list-types";
@@ -18,15 +19,15 @@ dotenv.config();
 main();
 
 async function main() {
-  const infobipConfig: InfobipConfig = {
-    baseUrl:
-      process.env["INFOBIP_BASE_URL"] || "https://wgqd1r.api.infobip.com",
-    apiKey:
-      process.env["INFOBIP_API_KEY"] ||
-      "2c971f613559b46363608c0ea093c7af-5af273da-7ce7-45fd-9c2e-9e17cdc13003",
-  };
+  // const infobipConfig: InfobipConfig = {
+  //   baseUrl:
+  //     process.env["INFOBIP_BASE_URL"] || "https://wgqd1r.api.infobip.com",
+  //   apiKey:
+  //     process.env["INFOBIP_API_KEY"] ||
+  //     "2c971f613559b46363608c0ea093c7af-5af273da-7ce7-45fd-9c2e-9e17cdc13003",
+  // };
 
-  const infobipProvider = new InfobipProvider(infobipConfig);
+  // const infobipProvider = new InfobipProvider(infobipConfig);
 
   try {
     // await infobipProvider.send(
@@ -313,24 +314,106 @@ async function main() {
   } catch (error) {
     console.error("Error with provider-specific channels:", error);
   }
+  
+  const dynamoDBConfigService = new DynamoDBConfigService({
+    tableName: 'market_config',
+    region: 'us-east-1',
+  });
 
-  const providerConfig: ProviderConfig = {
-    infobip: infobipConfig,
+  ProviderFactory.initialize({
+    dynamoDBConfigService,
+    providerSelectionStrategy: 'first-available',
+    providerConfigs: {
+      infobip: {
+        baseUrl: process.env['INFOBIP_BASE_URL'] || '',
+        apiKey: process.env['INFOBIP_API_KEY'] || ''
+      }
+    }
+  });
+
+  const marketContext: MarketContext = {
+    market: 'US',
   };
 
-  const infobipProviderFromFactory = ProviderFactory.createProvider(
-    "infobip",
-    providerConfig
-  );
-
   try {
-    await infobipProviderFromFactory.send(
-      "viber",
-      { type: "text", text: "Hello from Factory Infobip" } as TextMessage,
-      "380976115062"
-    );
-    console.log("Factory provider messages sent successfully!");
-  } catch (error) {
-    console.error("Error with factory provider:", error);
+    const carouselResult = await ProviderFactory.getProviderAndChannelForMarket(marketContext, 'carousel');
+    console.log({
+      provider: carouselResult.provider.constructor.name,
+      channel: carouselResult.channel,
+      selection: carouselResult.selection
+    });
+    carouselResult.provider.send(carouselResult.channel, {
+      type: "carousel",
+      text: "Beautiful cats",
+      items: [
+        {
+          title: "Cat 1",
+          description: "Beautiful cat 1",
+          mediaUrl:
+            "https://images.unsplash.com/photo-1578680632090-5933d7784c7b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          buttons: [
+            {
+              title: "Like",
+              action:
+                "https://images.unsplash.com/photo-1578680632090-5933d7784c7b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            },
+            {
+              title: "Share",
+              action:
+                "https://images.unsplash.com/photo-1578680632090-5933d7784c7b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            },
+          ],
+        },
+        {
+          title: "Cat 2",
+          description: "Beautiful cat 2",
+          mediaUrl:
+            "https://images.unsplash.com/photo-1558011958-c3bc18a2e393?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          buttons: [
+            {
+              title: "Like",
+              action:
+                "https://images.unsplash.com/photo-1558011958-c3bc18a2e393?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            },
+            {
+              title: "Share",
+              action:
+                "https://images.unsplash.com/photo-1558011958-c3bc18a2e393?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            },
+          ],
+        },
+        {
+          title: "Cat 3",
+          description: "Beautiful cat 3",
+          mediaUrl:
+            "https://images.unsplash.com/photo-1716467891152-1b43a96de578?q=80&w=2081&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          buttons: [
+            {
+              title: "Like",
+              action:
+                "https://images.unsplash.com/photo-1716467891152-1b43a96de578?q=80&w=2081&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            },
+            {
+              title: "Share",
+              action:
+                "https://images.unsplash.com/photo-1716467891152-1b43a96de578?q=80&w=2081&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            },
+          ],
+        },
+      ],
+    } as CarouselMessage, '380669858174');
+
+    const textResult = await ProviderFactory.getProviderAndChannelForMarket(marketContext, 'text');
+    console.log({
+      provider: textResult.provider.constructor.name,
+      channel: textResult.channel,
+      selection: textResult.selection
+    });
+    textResult.provider.send(textResult.channel, {
+      type: "text",
+      text: "Hello from factory",
+    } as TextMessage, '380669858174');
+  } catch (error: any) {
+    console.error('Error in simple selection:', error.message);
   }
 }

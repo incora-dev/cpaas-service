@@ -8,6 +8,10 @@ export abstract class BaseProvider {
     this.channels.set(channel.id, channel);
   }
 
+  supportsChannel(channelId: string) {
+    return this.channels.has(channelId);
+  }
+
   async send(
     channelId: string,
     message: BaseMessage,
