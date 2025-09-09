@@ -1,5 +1,5 @@
 import { BaseChannel } from '../BaseChannel';
-import { InfobipTextHandler } from '../../handlers/infobip';
+import { InfobipTextHandler, Infobip2FAHandler } from "../../handlers/infobip";
 
 export class InfobipSmsChannel extends BaseChannel {
   id = 'sms';
@@ -8,5 +8,6 @@ export class InfobipSmsChannel extends BaseChannel {
   constructor(config: { baseUrl: string; apiKey: string }) {
     super();
     this.registerHandler(new InfobipTextHandler(config));
+    this.registerHandler(new Infobip2FAHandler(config));
   }
 }

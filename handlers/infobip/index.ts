@@ -10,3 +10,4 @@ export { InfobipOtpHandler } from './InfobipOtpHandler';
 export { InfobipLocationHandler } from './InfobipLocationHandler';
 export { InfobipContactHandler } from './InfobipContactHandler';
 export { InfobipCardHandler } from "./InfobipCardHandler"
+export { Infobip2FAHandler } from "./Infobip2FAHandler"

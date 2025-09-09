@@ -17,7 +17,8 @@ export type MessageType =
   | "otp"
   | "location"
   | "contact"
-  | "card";
+  | "card"
+  | "2fa";
 
 export interface Button {
   title: string;
