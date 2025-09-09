@@ -21,7 +21,7 @@ export class InfobipTextHandler extends BaseHandler<TextMessage> {
             messages: [
               {
                 destinations: [{ to }],
-                from: from || "InfoSMS",
+                from: from || process.env["INFOBIP_SMS_FROM"],
                 text: message.text,
               },
             ],

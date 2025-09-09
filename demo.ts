@@ -11,6 +11,7 @@ import { InfobipProvider, InfobipConfig } from "./providers/InfobipProvider";
 // import { OtpMessage } from "./types/messages/otp-types";
 // import { LocationMessage } from "./types/messages/location-types";
 // import { ContactMessage } from "./types/messages/contact-types";
+// import { TwoFAMessage } from "./types/messages/2fa-types";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -306,6 +307,17 @@ async function main() {
     //     ],
     //   } as ContactMessage,
     //   "380976115062"
+    // );
+    // await infobipProvider.send(
+    //   "sms",
+    //   {
+    //     type: "2fa",
+    //     placeholders: {
+    //       firstName: "John",
+    //       lastName: "Doe",
+    //     },
+    //   } as TwoFAMessage,
+    //   "380669858174"
     // );
 
     console.log("Provider-specific channel messages sent successfully!");
