@@ -7,53 +7,50 @@ export class InfobipCardHandler extends BaseHandler<CardMessage> {
   async send(
     message: CardMessage,
     channelId: string,
-    to: string,
+    to: string | string[],
     from?: string
   ): Promise<void> {
     try {
-      let endpoint: string;
-      let payload: any;
+      const recipients = Array.isArray(to) ? to : [to];
 
       switch (channelId) {
-        case "rcs":
-          endpoint = "/rcs/2/messages";
-          payload = {
-            messages: [
-              {
-                sender: from || process.env["INFOBIP_RCS_FROM"],
-                destinations: [{ to }],
-                content: {
-                  type: "CARD",
-                  orientation: message.orientation,
-                  alignment: message.alignment,
+        case "rcs": {
+          const endpoint = "/rcs/2/messages";
+
+            const payload = {
+              messages: [
+                {
+                  sender: from || process.env["INFOBIP_RCS_FROM"],
+                  destinations: recipients.map((r) => ({ to: r })),
                   content: {
-                    title: message.title,
-                    description: message.description,
-                    media: {
-                      file: {
-                        url: message.mediaUrl,
+                    type: "CARD",
+                    orientation: message.orientation,
+                    alignment: message.alignment,
+                    content: {
+                      title: message.title,
+                      description: message.description,
+                      media: {
+                        file: { url: message.mediaUrl },
+                        thumbnail: { url: message.thumbnailUrl },
+                        height: message.height,
                       },
-                      thumbnail: {
-                        url: message.thumbnailUrl,
-                      },
-                      height: message.height,
                     },
                   },
                 },
-              },
-            ],
-          };
+              ],
+            };
+
+            const response = await this.client.post(endpoint, payload);
+            console.log(
+              `[rcs] Infobip card message sent successfully:`,
+              response.data
+            );
           break;
+        }
 
         default:
           throw new Error(`Unsupported channel for card message: ${channelId}`);
       }
-
-      const response = await this.client.post(endpoint, payload);
-      console.log(
-        `[${channelId}] Infobip card message sent successfully:`,
-        response.data
-      );
     } catch (error: any) {
       console.error(
         `[${channelId}] Error sending Infobip card message:`,

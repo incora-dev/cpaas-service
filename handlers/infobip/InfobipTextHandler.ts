@@ -7,49 +7,64 @@ export class InfobipTextHandler extends BaseHandler<TextMessage> {
   async send(
     message: TextMessage,
     channelId: string,
-    to: string,
+    to: string | string[],
     from?: string
   ): Promise<void> {
     try {
-      let endpoint: string;
-      let payload: any;
+      const recipients = Array.isArray(to) ? to : [to];
 
       switch (channelId) {
-        case "sms":
-          endpoint = "/sms/2/text/advanced";
-          payload = {
+        case "sms": {
+          const endpoint = "/sms/2/text/advanced";
+          const payload = {
             messages: [
               {
-                destinations: [{ to }],
+                destinations: recipients.map((r) => ({ to: r })),
                 from: from || process.env["INFOBIP_SMS_FROM"],
                 text: message.text,
               },
             ],
           };
+          const response = await this.client.post(endpoint, payload);
+          console.log(
+            `[sms] Infobip text message sent successfully:`,
+            response.data
+          );
           break;
+        }
 
-        case "whatsapp":
-          endpoint = "/whatsapp/1/message/text";
-          payload = {
-            from: from || process.env["INFOBIP_WHATSAPP_FROM"],
-            to,
-            content: {
-              text: message.text,
-              previewLink: message.text.includes("http"),
-              urlOptions: {
-                removeProtocol: false,
+        case "whatsapp": {
+          const endpoint = "/whatsapp/1/message/text";
+
+          for (const recipient of recipients) {
+            const payload = {
+              from: from || process.env["INFOBIP_WHATSAPP_FROM"],
+              to: recipient,
+              content: {
+                text: message.text,
+                previewLink: message.text.includes("http"),
+                urlOptions: {
+                  removeProtocol: false,
+                },
               },
-            },
-          };
-          break;
+            };
 
-        case "viber":
-          endpoint = "/viber/2/messages";
-          payload = {
+            const response = await this.client.post(endpoint, payload);
+            console.log(
+              `[whatsapp] Infobip text message sent successfully to ${recipient}:`,
+              response.data
+            );
+          }
+          break;
+        }
+
+        case "viber": {
+          const endpoint = "/viber/2/messages";
+          const payload = {
             messages: [
               {
                 sender: from || process.env["INFOBIP_VIBER_FROM"],
-                destinations: [{ to }],
+                destinations: recipients.map((r) => ({ to: r })),
                 content: {
                   text: message.text,
                   type: "TEXT",
@@ -62,15 +77,21 @@ export class InfobipTextHandler extends BaseHandler<TextMessage> {
               },
             ],
           };
+          const response = await this.client.post(endpoint, payload);
+          console.log(
+            `[viber] Infobip text message sent successfully:`,
+            response.data
+          );
           break;
+        }
 
-        case "rcs":
-          endpoint = "/rcs/2/messages";
-          payload = {
+        case "rcs": {
+          const endpoint = "/rcs/2/messages";
+          const payload = {
             messages: [
               {
                 sender: from || process.env["INFOBIP_RCS_FROM"],
-                destinations: [{ to }],
+                destinations: recipients.map((r) => ({ to: r })),
                 content: {
                   text: message.text,
                   type: "TEXT",
@@ -78,17 +99,17 @@ export class InfobipTextHandler extends BaseHandler<TextMessage> {
               },
             ],
           };
+          const response = await this.client.post(endpoint, payload);
+          console.log(
+            `[rcs] Infobip text message sent successfully:`,
+            response.data
+          );
           break;
+        }
 
         default:
           throw new Error(`Unsupported channel for text message: ${channelId}`);
       }
-
-      const response = await this.client.post(endpoint, payload);
-      console.log(
-        `[${channelId}] Infobip text message sent successfully:`,
-        response.data
-      );
     } catch (error) {
       console.error(
         `[${channelId}] Error sending Infobip text message:`,

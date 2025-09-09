@@ -1,4 +1,4 @@
-import {TwoFAMessage} from "../../types/messages/2fa-types"
+import { TwoFAMessage } from "../../types/messages/2fa-types";
 import { BaseHandler } from "../BaseHandler";
 
 export class Infobip2FAHandler extends BaseHandler<TwoFAMessage> {
@@ -7,36 +7,40 @@ export class Infobip2FAHandler extends BaseHandler<TwoFAMessage> {
   async send(
     message: TwoFAMessage,
     channelId: string,
-    to: string,
+    to: string | string[],
     from?: string
   ): Promise<void> {
     try {
-      let endpoint: string;
-      let payload: any;
+      const recipients = Array.isArray(to) ? to : [to];
 
-      switch (channelId) {
-        case "sms":
-          endpoint = "/2fa/2/pin";
-          payload = {
-            from: from || process.env["INFOBIP_SMS_FROM"],
-            applicationId: process.env["APPLICATION_ID"],
-            messageId: process.env["MESSAGE_ID"],
-            to,
-            placeholders: message.placeholders,
-          };
-          break;
+      for (const recipient of recipients) {
+        let endpoint: string;
+        let payload: any;
 
-        default:
-          throw new Error(
-            `Unsupported channel for 2FA message: ${channelId}`
-          );
+        switch (channelId) {
+          case "sms":
+            endpoint = "/2fa/2/pin";
+            payload = {
+              from: from || process.env["INFOBIP_SMS_FROM"],
+              applicationId: process.env["APPLICATION_ID"],
+              messageId: process.env["MESSAGE_ID"],
+              to: recipient,
+              placeholders: message.placeholders,
+            };
+            break;
+
+          default:
+            throw new Error(
+              `Unsupported channel for 2FA message: ${channelId}`
+            );
+        }
+
+        const response = await this.client.post(endpoint, payload);
+        console.log(
+          `[${channelId}] Infobip 2FA message sent successfully to ${recipient}:`,
+          response.data
+        );
       }
-
-      const response = await this.client.post(endpoint, payload);
-      console.log(
-        `[${channelId}] Infobip 2FA message sent successfully:`,
-        response.data
-      );
     } catch (error: any) {
       console.error(
         `[${channelId}] Error sending Infobip 2FA message:`,

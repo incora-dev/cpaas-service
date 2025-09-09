@@ -7,43 +7,46 @@ export class InfobipLocationHandler extends BaseHandler<LocationMessage> {
   async send(
     message: LocationMessage,
     channelId: string,
-    to: string,
+    to: string | string[],
     from?: string
   ): Promise<void> {
     try {
-      let endpoint: string;
-      let payload: any;
+      const recipients = Array.isArray(to) ? to : [to];
 
       switch (channelId) {
-        case "whatsapp":
-          endpoint = "/whatsapp/1/message/location";
-          payload = {
-            from: from || process.env["INFOBIP_WHATSAPP_FROM"],
-            to,
-            content: {
-              latitude: message.latitude,
-              longitude: message.longitude,
-              name: message.name,
-              address: message.address,
-            },
-          };
+        case "whatsapp": {
+          const endpoint = "/whatsapp/1/message/location";
+
+          for (const recipient of recipients) {
+            const payload = {
+              from: from || process.env["INFOBIP_WHATSAPP_FROM"],
+              to: recipient,
+              content: {
+                latitude: message.latitude,
+                longitude: message.longitude,
+                name: message.name,
+                address: message.address,
+              },
+            };
+
+            const response = await this.client.post(endpoint, payload);
+            console.log(
+              `[whatsapp] Infobip location message sent successfully to ${recipient}:`,
+              response.data
+            );
+          }
           break;
+        }
 
         default:
           throw new Error(
             `Unsupported channel for location message: ${channelId}`
           );
       }
-
-      const response = await this.client.post(endpoint, payload);
-      console.log(
-        `[${channelId}] Infobip location message sent successfully:`,
-        response.data
-      );
     } catch (error: any) {
       console.error(
         `[${channelId}] Error sending Infobip location message:`,
-        error
+        error.response?.data || error
       );
       throw error;
     }
