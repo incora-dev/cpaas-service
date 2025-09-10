@@ -13,20 +13,28 @@ export class Infobip2FAHandler extends BaseHandler<TwoFAMessage> {
     try {
       const recipients = Array.isArray(to) ? to : [to];
 
-      for (const recipient of recipients) {
         let endpoint: string;
         let payload: any;
 
         switch (channelId) {
           case "sms":
             endpoint = "/2fa/2/pin";
-            payload = {
-              from: from || process.env["INFOBIP_SMS_FROM"],
-              applicationId: process.env["APPLICATION_ID"],
-              messageId: process.env["MESSAGE_ID"],
-              to: recipient,
-              placeholders: message.placeholders,
-            };
+
+            for (const recipient of recipients) {
+              payload = {
+                from: from || process.env["INFOBIP_SMS_FROM"],
+                applicationId: process.env["APPLICATION_ID"],
+                messageId: process.env["MESSAGE_ID"],
+                to: recipient,
+                placeholders: message.placeholders,
+              };
+              
+              const response = await this.client.post(endpoint, payload);
+              console.log(
+                `[sms] Infobip 2FA message sent successfully to ${recipient}:`,
+                response.data
+              );
+            }
             break;
 
           default:
@@ -34,14 +42,7 @@ export class Infobip2FAHandler extends BaseHandler<TwoFAMessage> {
               `Unsupported channel for 2FA message: ${channelId}`
             );
         }
-
-        const response = await this.client.post(endpoint, payload);
-        console.log(
-          `[${channelId}] Infobip 2FA message sent successfully to ${recipient}:`,
-          response.data
-        );
-      }
-    } catch (error: any) {
+     } catch (error: any) {
       console.error(
         `[${channelId}] Error sending Infobip 2FA message:`,
         error.response?.data || error
