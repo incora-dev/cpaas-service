@@ -24,6 +24,7 @@ export class InfobipFileHandler extends BaseHandler<FileMessage> {
               content: {
                 mediaUrl: message.mediaUrl,
                 filename: message.filename,
+                caption: message.caption,
               },
             };
 

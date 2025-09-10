@@ -53,6 +53,9 @@ export class InfobipCarouselHandler extends BaseHandler<CarouselMessage> {
               description: item.description,
               media: {
                 file: { url: item.mediaUrl },
+                thumbnail: {
+                  url: item.thumbnailUrl,
+                },
                 height: item.height,
               },
             }));
