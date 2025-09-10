@@ -68,6 +68,7 @@ export class InfobipTextHandler extends BaseHandler<TextMessage> {
                 content: {
                   text: message.text,
                   type: "TEXT",
+                  button: message.button,
                 },
                 options: {
                   label: "TRANSACTIONAL",
