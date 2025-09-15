@@ -12,30 +12,40 @@ export class InfobipAudioHandler extends BaseHandler<AudioMessage> {
   ): Promise<void> {
     try {
       const recipients = Array.isArray(to) ? to : [to];
+      let endpoint: string;
+      let payload: any;
 
       switch (channelId) {
         case "whatsapp": {
-          const endpoint = "/whatsapp/1/message/audio";
+          endpoint = "/messages-api/1/messages";
 
-          for (const recipient of recipients) {
-            const payload = {
-              from: from || process.env["INFOBIP_WHATSAPP_FROM"],
-              to: recipient,
-              content: { mediaUrl: message.mediaUrl },
-            };
-
-            const response = await this.client.post(endpoint, payload);
-            console.log(
-              `[whatsapp] Infobip audio message sent successfully to ${recipient}:`,
-              response.data
-            );
-          }
+          payload = {
+            messages: [
+              {
+                channel: "WHATSAPP",
+                sender: from || process.env["INFOBIP_WHATSAPP_FROM"],
+                destinations: recipients.map((r) => ({ to: r })),
+                content: {
+                  body: {
+                    type: "DOCUMENT",
+                    url: message.mediaUrl,
+                    text: message.text,
+                  },
+                  buttons: message.buttons?.map((btn) => ({
+                    type: btn.type,
+                    text: btn.text,
+                    postbackData: btn.postbackData,
+                  })),
+                },
+              },
+            ],
+          };
           break;
         }
 
         case "rcs": {
-          const endpoint = "/rcs/2/messages";
-          const payload = {
+          endpoint = "/rcs/2/messages";
+          payload = {
             messages: [
               {
                 sender: from || process.env["INFOBIP_RCS_FROM"],
@@ -49,12 +59,6 @@ export class InfobipAudioHandler extends BaseHandler<AudioMessage> {
               },
             ],
           };
-
-          const response = await this.client.post(endpoint, payload);
-          console.log(
-            `[rcs] Infobip audio message sent successfully:`,
-            response.data
-          );
           break;
         }
 
@@ -63,6 +67,12 @@ export class InfobipAudioHandler extends BaseHandler<AudioMessage> {
             `Unsupported channel for audio message: ${channelId}`
           );
       }
+
+       const response = await this.client.post(endpoint, payload);
+       console.log(
+         `[${channelId}] Infobip audio message sent successfully:`,
+         response.data
+       );
     } catch (error: any) {
       console.error(
         `[${channelId}] Error sending Infobip audio message:`,

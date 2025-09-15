@@ -9,4 +9,7 @@ export interface CardMessage extends BaseMessage {
   mediaUrl: string;
   thumbnailUrl?: string;
   height: "SHORT" | "MEDIUM" | "TALL";
+  text: string;
+  redirectUrl: string;
+  isVideo?: boolean;
 }

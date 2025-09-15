@@ -12,34 +12,40 @@ export class InfobipFileHandler extends BaseHandler<FileMessage> {
   ): Promise<void> {
     try {
       const recipients = Array.isArray(to) ? to : [to];
+      let endpoint: string;
+      let payload: any;
 
       switch (channelId) {
         case "whatsapp": {
-          const endpoint = "/whatsapp/1/message/document";
+          endpoint = "/messages-api/1/messages";
 
-          for (const recipient of recipients) {
-            const payload = {
-              from: from || process.env["INFOBIP_WHATSAPP_FROM"],
-              to: recipient,
-              content: {
-                mediaUrl: message.mediaUrl,
-                filename: message.filename,
-                caption: message.caption,
+          payload = {
+            messages: [
+              {
+                channel: "WHATSAPP",
+                sender: from || process.env["INFOBIP_WHATSAPP_FROM"],
+                destinations: recipients.map((r) => ({ to: r })),
+                content: {
+                  body: {
+                    type: "DOCUMENT",
+                    url: message.mediaUrl,
+                    text: message.caption,
+                  },
+                  buttons: message.buttons?.map((btn) => ({
+                    type: btn.type,
+                    text: btn.text,
+                    postbackData: btn.postbackData,
+                  })),
+                },
               },
-            };
-
-            const response = await this.client.post(endpoint, payload);
-            console.log(
-              `[whatsapp] Infobip file message sent successfully to ${recipient}:`,
-              response.data
-            );
-          }
+            ],
+          };
           break;
         }
 
         case "viber": {
-          const endpoint = "/viber/2/messages";
-          const payload = {
+          endpoint = "/viber/2/messages";
+          payload = {
             messages: [
               {
                 sender: from || process.env["INFOBIP_VIBER_FROM"],
@@ -57,18 +63,12 @@ export class InfobipFileHandler extends BaseHandler<FileMessage> {
               },
             ],
           };
-
-          const response = await this.client.post(endpoint, payload);
-          console.log(
-            `[viber] Infobip file message sent successfully:`,
-            response.data
-          );
           break;
         }
 
         case "rcs": {
-          const endpoint = "/rcs/2/messages";
-          const payload = {
+          endpoint = "/rcs/2/messages";
+          payload = {
             messages: recipients.map((recipient) => ({
               sender: from || process.env["INFOBIP_RCS_FROM"],
               destinations: [{ to: recipient }],
@@ -80,22 +80,22 @@ export class InfobipFileHandler extends BaseHandler<FileMessage> {
               },
             })),
           };
-
-          const response = await this.client.post(endpoint, payload);
-          console.log(
-            `[rcs] Infobip file message sent successfully:`,
-            response.data
-          );
           break;
         }
 
         default:
           throw new Error(`Unsupported channel for file message: ${channelId}`);
       }
+
+       const response = await this.client.post(endpoint, payload);
+       console.log(
+         `[${channelId}] Infobip file message sent successfully:`,
+         response.data
+       );
     } catch (error: any) {
       console.error(
         `[${channelId}] Error sending Infobip file message:`,
-        error
+        error.response?.data || error
       );
       throw error;
     }

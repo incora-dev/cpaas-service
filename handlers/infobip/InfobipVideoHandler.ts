@@ -12,34 +12,42 @@ export class InfobipVideoHandler extends BaseHandler<VideoMessage> {
   ): Promise<void> {
     try {
       const recipients = Array.isArray(to) ? to : [to];
+      let endpoint: string;
+      let payload: any;
 
       switch (channelId) {
         case "whatsapp": {
-          const endpoint = "/whatsapp/1/message/video";
+          endpoint = "/messages-api/1/messages";
 
-          for (const recipient of recipients) {
-            const payload = {
-              from: from || process.env["INFOBIP_WHATSAPP_FROM"],
-              to: recipient,
-              content: {
-                mediaUrl: message.mediaUrl,
-                caption: message.caption,
+          payload = {
+            messages: [
+              {
+                channel: "WHATSAPP",
+                sender: from || process.env["INFOBIP_WHATSAPP_FROM"],
+                destinations: recipients.map((r) => ({ to: r })),
+                content: {
+                  body: {
+                    type: "VIDEO",
+                    url: message.mediaUrl,
+                    text: message.caption,
+                  },
+                  buttons: message.buttons?.map((btn) => ({
+                    type: btn.type,
+                    text: btn.text,
+                    postbackData: btn.postbackData,
+                  })),
+                },
               },
-            };
-
-            const response = await this.client.post(endpoint, payload);
-            console.log(
-              `[whatsapp] Infobip video message sent successfully to ${recipient}:`,
-              response.data
-            );
-          }
+            ],
+          };
           break;
         }
 
-        case "viber": {
-          const endpoint = "/viber/2/messages";
+        case "viber":
+          {
+            endpoint = "/viber/2/messages";
 
-            const payload = {
+            payload = {
               messages: [
                 {
                   sender: from || process.env["INFOBIP_VIBER_FROM"],
@@ -60,41 +68,29 @@ export class InfobipVideoHandler extends BaseHandler<VideoMessage> {
                 },
               ],
             };
-
-            const response = await this.client.post(endpoint, payload);
-            console.log(
-              `[viber] Infobip video message sent successfully:`,
-              response.data
-            );
+            break;
           }
-          break;
 
         case "rcs": {
-          const endpoint = "/rcs/2/messages";
+          endpoint = "/rcs/2/messages";
 
-            const payload = {
-              messages: [
-                {
-                  sender: from || process.env["INFOBIP_RCS_FROM"],
-                  destinations: recipients.map((r) => ({ to: r })),
-                  content: {
-                    type: "FILE",
-                    file: {
-                      url: message.mediaUrl,
-                    },
-                    thumbnail: {
-                      url: message.thumbnailUrl,
-                    },
+          payload = {
+            messages: [
+              {
+                sender: from || process.env["INFOBIP_RCS_FROM"],
+                destinations: recipients.map((r) => ({ to: r })),
+                content: {
+                  type: "FILE",
+                  file: {
+                    url: message.mediaUrl,
+                  },
+                  thumbnail: {
+                    url: message.thumbnailUrl,
                   },
                 },
-              ],
-            };
-
-            const response = await this.client.post(endpoint, payload);
-          console.log(
-            `[rcs] Infobip video message sent successfully:`,
-            response.data
-          );
+              },
+            ],
+          };
           break;
         }
 
@@ -103,6 +99,12 @@ export class InfobipVideoHandler extends BaseHandler<VideoMessage> {
             `Unsupported channel for video message: ${channelId}`
           );
       }
+
+       const response = await this.client.post(endpoint, payload);
+       console.log(
+         `[${channelId}] Infobip video message sent successfully:`,
+         response.data
+       );
     } catch (error: any) {
       console.error(
         `[${channelId}] Error sending Infobip video message:`,

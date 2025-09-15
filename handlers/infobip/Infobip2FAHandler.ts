@@ -12,9 +12,8 @@ export class Infobip2FAHandler extends BaseHandler<TwoFAMessage> {
   ): Promise<void> {
     try {
       const recipients = Array.isArray(to) ? to : [to];
-
-        let endpoint: string;
-        let payload: any;
+      let endpoint: string;
+      let payload: any;
 
         switch (channelId) {
           case "sms":
