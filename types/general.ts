@@ -20,9 +20,17 @@ export type MessageType =
   | "card"
   | "2fa";
 
+export type BtnType = "REPLY" | "OPEN_URL"
+
 export interface Button {
   title: string;
   action: string;
+}
+export interface MessageBtn {
+  type: BtnType;
+  text: string;
+  url?: string;
+  postbackData?: string;
 }
 
 export interface BaseMessage {

@@ -13,11 +13,14 @@ export class InfobipListHandler extends BaseHandler<ListMessage> {
   ): Promise<void> {
     try {
       const recipients = Array.isArray(to) ? to : [to];
+      let endpoint: string;
+      let payload: any;
 
       switch (channelId) {
         case "viber": {
-          const endpoint = "/viber/2/messages";
-          const payload = {
+          endpoint = "/viber/2/messages";
+
+          payload = {
             messages: recipients.map((recipient) => ({
               sender: from || process.env["INFOBIP_VIBER_FROM"],
               destinations: [{ to: recipient }],
@@ -33,54 +36,48 @@ export class InfobipListHandler extends BaseHandler<ListMessage> {
               },
             })),
           };
-
-          const response = await this.client.post(endpoint, payload);
-          console.log(
-            `[viber] Infobip list message sent successfully:`,
-            response.data
-          );
           break;
         }
 
         case "whatsapp": {
-          const endpoint = "/whatsapp/1/message/interactive/list";
+          endpoint = "/messages-api/1/messages";
 
-          for (const recipient of recipients) {
-            const sections = [
+          payload = {
+            messages: [
               {
-                rows: (message.options || []).map((opt) => ({
-                  id: uuidv4(),
-                  title: opt,
-                })),
-              },
-            ];
-
-            const payload = {
-              from: from || process.env["INFOBIP_WHATSAPP_FROM"],
-              to: recipient,
-              content: {
-                body: {
-                  text: message.text,
+                channel: "WHATSAPP",
+                sender: from || process.env["INFOBIP_WHATSAPP_FROM"],
+                destinations: recipients.map((r) => ({ to: r })),
+                content: {
+                  body: {
+                    type: "LIST",
+                    text: message.text,
+                    subtext: message.subtext,
+                    sections: message.sections.map((section) => ({
+                      sectionTitle: section.sectionTitle,
+                      items: section.items.map((item) => ({
+                        id: uuidv4(),
+                        text: item.text,
+                        description: item.description,
+                      })),
+                    })),
+                  },
                 },
-                action: {
-                  title: message.actionTitle,
-                  sections,
-                },
               },
-            };
-
-            const response = await this.client.post(endpoint, payload);
-            console.log(
-              `[whatsapp] Infobip list message sent successfully to ${recipient}:`,
-              response.data
-            );
-          }
+            ],
+          };
           break;
         }
 
         default:
           throw new Error(`Unsupported channel for list message: ${channelId}`);
       }
+
+       const response = await this.client.post(endpoint, payload);
+       console.log(
+         `[${channelId}] Infobip list message sent successfully:`,
+         response.data
+       );
     } catch (error: any) {
       console.error(
         `[${channelId}] Error sending Infobip list message:`,

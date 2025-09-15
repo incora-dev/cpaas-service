@@ -12,11 +12,14 @@ export class InfobipTextHandler extends BaseHandler<TextMessage> {
   ): Promise<void> {
     try {
       const recipients = Array.isArray(to) ? to : [to];
+      let endpoint: string;
+      let payload: any;
 
       switch (channelId) {
         case "sms": {
-          const endpoint = "/sms/2/text/advanced";
-          const payload = {
+          endpoint = "/sms/2/text/advanced";
+
+          payload = {
             messages: [
               {
                 destinations: recipients.map((r) => ({ to: r })),
@@ -25,42 +28,40 @@ export class InfobipTextHandler extends BaseHandler<TextMessage> {
               },
             ],
           };
-          const response = await this.client.post(endpoint, payload);
-          console.log(
-            `[sms] Infobip text message sent successfully:`,
-            response.data
-          );
           break;
         }
 
         case "whatsapp": {
-          const endpoint = "/whatsapp/1/message/text";
+          endpoint = "/messages-api/1/messages";
 
-          for (const recipient of recipients) {
-            const payload = {
-              from: from || process.env["INFOBIP_WHATSAPP_FROM"],
-              to: recipient,
-              content: {
-                text: message.text,
-                previewLink: message.text.includes("http"),
-                urlOptions: {
-                  removeProtocol: false,
+          payload = {
+            messages: [
+              {
+                channel: "WHATSAPP",
+                sender: from || process.env["INFOBIP_WHATSAPP_FROM"],
+                destinations: recipients.map((r) => ({ to: r })),
+                content: {
+                  body: {
+                    type: "TEXT",
+                    text: message.text,
+                  },
+                  buttons: message.buttons?.map((btn) => ({
+                    type: btn.type, 
+                    text: btn.text, 
+                    postbackData: btn.postbackData, 
+                    url: btn.url,
+                  })),
                 },
               },
-            };
-
-            const response = await this.client.post(endpoint, payload);
-            console.log(
-              `[whatsapp] Infobip text message sent successfully to ${recipient}:`,
-              response.data
-            );
-          }
+            ],
+          };
           break;
         }
 
         case "viber": {
-          const endpoint = "/viber/2/messages";
-          const payload = {
+          endpoint = "/viber/2/messages";
+
+          payload = {
             messages: [
               {
                 sender: from || process.env["INFOBIP_VIBER_FROM"],
@@ -78,17 +79,13 @@ export class InfobipTextHandler extends BaseHandler<TextMessage> {
               },
             ],
           };
-          const response = await this.client.post(endpoint, payload);
-          console.log(
-            `[viber] Infobip text message sent successfully:`,
-            response.data
-          );
           break;
         }
 
         case "rcs": {
-          const endpoint = "/rcs/2/messages";
-          const payload = {
+          endpoint = "/rcs/2/messages";
+
+          payload = {
             messages: [
               {
                 sender: from || process.env["INFOBIP_RCS_FROM"],
@@ -100,21 +97,22 @@ export class InfobipTextHandler extends BaseHandler<TextMessage> {
               },
             ],
           };
-          const response = await this.client.post(endpoint, payload);
-          console.log(
-            `[rcs] Infobip text message sent successfully:`,
-            response.data
-          );
           break;
         }
 
         default:
           throw new Error(`Unsupported channel for text message: ${channelId}`);
       }
-    } catch (error) {
+
+       const response = await this.client.post(endpoint, payload);
+       console.log(
+         `[${channelId}] Infobip text message sent successfully:`,
+         response.data
+       );
+    } catch (error: any) {
       console.error(
         `[${channelId}] Error sending Infobip text message:`,
-        error
+        error.response?.data || error
       );
       throw error;
     }

@@ -12,24 +12,28 @@ export class InfobipStickerHandler extends BaseHandler<StickerMessage> {
   ): Promise<void> {
     try {
       const recipients = Array.isArray(to) ? to : [to];
+      let endpoint: string;
+      let payload: any;
 
       switch (channelId) {
         case "whatsapp": {
-          const endpoint = "/whatsapp/1/message/sticker";
+          endpoint = "/messages-api/1/messages";
 
-          for (const recipient of recipients) {
-            const payload = {
-              from: from || process.env["INFOBIP_WHATSAPP_FROM"],
-              to: recipient,
-              content: { mediaUrl: message.mediaUrl },
-            };
-
-            const response = await this.client.post(endpoint, payload);
-            console.log(
-              `[whatsapp] Infobip sticker message sent successfully to ${recipient}:`,
-              response.data
-            );
-          }
+          payload = {
+            messages: [
+              {
+                channel: "WHATSAPP",
+                sender: from || process.env["INFOBIP_WHATSAPP_FROM"],
+                destinations: recipients.map((r) => ({ to: r })),
+                content: {
+                  body: {
+                    type: "STICKER",
+                    reference: message.mediaUrl,
+                  }
+                },
+              },
+            ],
+          };
           break;
         }
 
@@ -38,6 +42,12 @@ export class InfobipStickerHandler extends BaseHandler<StickerMessage> {
             `Unsupported channel for sticker message: ${channelId}`
           );
       }
+
+       const response = await this.client.post(endpoint, payload);
+       console.log(
+         `[${channelId}] Infobip sticker message sent successfully:`,
+         response.data
+       );
     } catch (error: any) {
       console.error(
         `[${channelId}] Error sending Infobip sticker message:`,

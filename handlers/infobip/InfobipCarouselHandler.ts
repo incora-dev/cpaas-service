@@ -11,8 +11,7 @@ export class InfobipCarouselHandler extends BaseHandler<CarouselMessage> {
     from?: string
   ): Promise<void> {
     try {
-      const recipients = Array.isArray(to) ? to : [to];
-
+        const recipients = Array.isArray(to) ? to : [to];
         let endpoint: string;
         let payload: any;
 
