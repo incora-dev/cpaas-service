@@ -20,6 +20,10 @@ export class InfobipListHandler extends BaseHandler<ListMessage> {
         case "viber": {
           endpoint = "/viber/2/messages";
 
+          const options = message.sections.flatMap((section) =>
+            section.items.map((item) => item.text)
+          );
+
           payload = {
             messages: recipients.map((recipient) => ({
               sender: from || process.env["INFOBIP_VIBER_FROM"],
@@ -27,7 +31,7 @@ export class InfobipListHandler extends BaseHandler<ListMessage> {
               content: {
                 type: "LIST",
                 text: message.text,
-                options: message.options,
+                options: options
               },
               options: {
                 label: "TRANSACTIONAL",
@@ -42,6 +46,15 @@ export class InfobipListHandler extends BaseHandler<ListMessage> {
         case "whatsapp": {
           endpoint = "/messages-api/1/messages";
 
+          const sections = message.sections.map((section) => ({
+            sectionTitle: section.sectionTitle,
+            items: section.items.map((item) => ({
+              id: uuidv4(),
+              text: item.text,
+              description: item.description,
+            })),
+          }));
+
           payload = {
             messages: [
               {
@@ -52,15 +65,8 @@ export class InfobipListHandler extends BaseHandler<ListMessage> {
                   body: {
                     type: "LIST",
                     text: message.text,
-                    subtext: message.subtext,
-                    sections: message.sections.map((section) => ({
-                      sectionTitle: section.sectionTitle,
-                      items: section.items.map((item) => ({
-                        id: uuidv4(),
-                        text: item.text,
-                        description: item.description,
-                      })),
-                    })),
+                    subtext: message.actionTitle,
+                    sections,
                   },
                 },
               },

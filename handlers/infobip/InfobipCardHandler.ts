@@ -29,12 +29,12 @@ export class InfobipCardHandler extends BaseHandler<CardMessage> {
                   body: {
                     type: "RICH_LINK",
                     url: message.mediaUrl,
-                    text: message.text,
+                    text: message.title,
                     redirectUrl: message.redirectUrl,
-                    isVideo: message.isVideo || false,
+                    isVideo: message.isVideo,
                   },
                 },
-              },
+              }
             ],
           };
           break;

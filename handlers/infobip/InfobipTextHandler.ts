@@ -45,12 +45,15 @@ export class InfobipTextHandler extends BaseHandler<TextMessage> {
                     type: "TEXT",
                     text: message.text,
                   },
-                  buttons: message.buttons?.map((btn) => ({
-                    type: btn.type, 
-                    text: btn.text, 
-                    postbackData: btn.postbackData, 
-                    url: btn.url,
-                  })),
+                  buttons: message.button
+                    ? [
+                        {
+                          type: "OPEN_URL",
+                          text: message.button.title,
+                          url: message.button.action,
+                        },
+                      ]
+                    : undefined,
                 },
               },
             ],

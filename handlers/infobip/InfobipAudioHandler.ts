@@ -30,12 +30,7 @@ export class InfobipAudioHandler extends BaseHandler<AudioMessage> {
                     type: "DOCUMENT",
                     url: message.mediaUrl,
                     text: message.text,
-                  },
-                  buttons: message.buttons?.map((btn) => ({
-                    type: btn.type,
-                    text: btn.text,
-                    postbackData: btn.postbackData,
-                  })),
+                  }
                 },
               },
             ],

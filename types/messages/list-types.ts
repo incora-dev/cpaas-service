@@ -14,7 +14,6 @@ export interface ListItem {
 export interface ListMessage extends BaseMessage {
   type: "list";
   text: string;
-  options: string[];
-  subtext?: string;
+  actionTitle?: string;
   sections: ListSection[];
 }
