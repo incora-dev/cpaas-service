@@ -30,12 +30,7 @@ export class InfobipVideoHandler extends BaseHandler<VideoMessage> {
                     type: "VIDEO",
                     url: message.mediaUrl,
                     text: message.caption,
-                  },
-                  buttons: message.buttons?.map((btn) => ({
-                    type: btn.type,
-                    text: btn.text,
-                    postbackData: btn.postbackData,
-                  })),
+                  }
                 },
               },
             ],

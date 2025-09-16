@@ -30,12 +30,7 @@ export class InfobipFileHandler extends BaseHandler<FileMessage> {
                     type: "DOCUMENT",
                     url: message.mediaUrl,
                     text: message.caption,
-                  },
-                  buttons: message.buttons?.map((btn) => ({
-                    type: btn.type,
-                    text: btn.text,
-                    postbackData: btn.postbackData,
-                  })),
+                  }
                 },
               },
             ],
