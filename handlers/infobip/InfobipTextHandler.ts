@@ -7,52 +7,72 @@ export class InfobipTextHandler extends BaseHandler<TextMessage> {
   async send(
     message: TextMessage,
     channelId: string,
-    to: string,
+    to: string | string[],
     from?: string
   ): Promise<void> {
     try {
+      const recipients = Array.isArray(to) ? to : [to];
       let endpoint: string;
       let payload: any;
 
       switch (channelId) {
-        case "sms":
+        case "sms": {
           endpoint = "/sms/2/text/advanced";
+
           payload = {
             messages: [
               {
-                destinations: [{ to }],
-                from: from || "InfoSMS",
+                destinations: recipients.map((r) => ({ to: r })),
+                from: from || process.env["INFOBIP_SMS_FROM"],
                 text: message.text,
               },
             ],
           };
           break;
+        }
 
-        case "whatsapp":
-          endpoint = "/whatsapp/1/message/text";
+        case "whatsapp": {
+          endpoint = "/messages-api/1/messages";
+
           payload = {
-            from: from || process.env["INFOBIP_WHATSAPP_FROM"],
-            to,
-            content: {
-              text: message.text,
-              previewLink: message.text.includes("http"),
-              urlOptions: {
-                removeProtocol: false,
+            messages: [
+              {
+                channel: "WHATSAPP",
+                sender: from || process.env["INFOBIP_WHATSAPP_FROM"],
+                destinations: recipients.map((r) => ({ to: r })),
+                content: {
+                  body: {
+                    type: "TEXT",
+                    text: message.text,
+                  },
+                  buttons: message.button
+                    ? [
+                        {
+                          type: "OPEN_URL",
+                          text: message.button.title,
+                          url: message.button.action,
+                        },
+                      ]
+                    : undefined,
+                },
               },
-            },
+            ],
           };
           break;
+        }
 
-        case "viber":
+        case "viber": {
           endpoint = "/viber/2/messages";
+
           payload = {
             messages: [
               {
                 sender: from || process.env["INFOBIP_VIBER_FROM"],
-                destinations: [{ to }],
+                destinations: recipients.map((r) => ({ to: r })),
                 content: {
                   text: message.text,
                   type: "TEXT",
+                  button: message.button,
                 },
                 options: {
                   label: "TRANSACTIONAL",
@@ -63,14 +83,16 @@ export class InfobipTextHandler extends BaseHandler<TextMessage> {
             ],
           };
           break;
+        }
 
-        case "rcs":
+        case "rcs": {
           endpoint = "/rcs/2/messages";
+
           payload = {
             messages: [
               {
                 sender: from || process.env["INFOBIP_RCS_FROM"],
-                destinations: [{ to }],
+                destinations: recipients.map((r) => ({ to: r })),
                 content: {
                   text: message.text,
                   type: "TEXT",
@@ -79,20 +101,21 @@ export class InfobipTextHandler extends BaseHandler<TextMessage> {
             ],
           };
           break;
+        }
 
         default:
           throw new Error(`Unsupported channel for text message: ${channelId}`);
       }
 
-      const response = await this.client.post(endpoint, payload);
-      console.log(
-        `[${channelId}] Infobip text message sent successfully:`,
-        response.data
-      );
-    } catch (error) {
+       const response = await this.client.post(endpoint, payload);
+       console.log(
+         `[${channelId}] Infobip text message sent successfully:`,
+         response.data
+       );
+    } catch (error: any) {
       console.error(
         `[${channelId}] Error sending Infobip text message:`,
-        error
+        error.response?.data || error
       );
       throw error;
     }

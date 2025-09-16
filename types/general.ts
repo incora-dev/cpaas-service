@@ -17,7 +17,10 @@ export type MessageType =
   | "otp"
   | "location"
   | "contact"
-  | "card";
+  | "card"
+  | "2fa";
+
+export type BtnType = "REPLY" | "OPEN_URL"
 
 export interface Button {
   title: string;

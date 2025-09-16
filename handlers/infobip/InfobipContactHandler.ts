@@ -7,36 +7,39 @@ export class InfobipContactHandler extends BaseHandler<ContactMessage> {
   async send(
     message: ContactMessage,
     channelId: string,
-    to: string,
+    to: string | string[],
     from?: string
   ): Promise<void> {
     try {
-      let endpoint: string;
-      let payload: any;
+      const recipients = Array.isArray(to) ? to : [to];
 
       switch (channelId) {
-        case "whatsapp":
-          endpoint = "/whatsapp/1/message/contact";
-          payload = {
-            from: from || process.env["INFOBIP_WHATSAPP_FROM"],
-            to,
-            content: {
-              contacts: message.contacts,
-            },
-          };
+        case "whatsapp": {
+          const endpoint = "/whatsapp/1/message/contact";
+
+          for (const recipient of recipients) {
+            const payload = {
+              from: from || process.env["INFOBIP_WHATSAPP_FROM"],
+              to: recipient,
+              content: {
+                contacts: message.contacts,
+              },
+            };
+
+            const response = await this.client.post(endpoint, payload);
+            console.log(
+              `[whatsapp] Infobip contact message sent successfully to ${recipient}:`,
+              response.data
+            );
+          }
           break;
+        }
 
         default:
           throw new Error(
             `Unsupported channel for contact message: ${channelId}`
           );
       }
-
-      const response = await this.client.post(endpoint, payload);
-      console.log(
-        `[${channelId}] Infobip contact message sent successfully:`,
-        response.data
-      );
     } catch (error: any) {
       console.error(
         `[${channelId}] Error sending Infobip contact message:`,

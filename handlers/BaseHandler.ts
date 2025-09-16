@@ -19,7 +19,7 @@ export abstract class BaseHandler<T extends BaseMessage = BaseMessage> {
   abstract send(
     message: T,
     channelId: string,
-    to: string,
+    to: string | string[],
     from?: string
   ): Promise<void>;
 }

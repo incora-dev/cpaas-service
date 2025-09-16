@@ -7,21 +7,47 @@ export class InfobipCardHandler extends BaseHandler<CardMessage> {
   async send(
     message: CardMessage,
     channelId: string,
-    to: string,
+    to: string | string[],
     from?: string
   ): Promise<void> {
     try {
+      const recipients = Array.isArray(to) ? to : [to];
       let endpoint: string;
       let payload: any;
 
       switch (channelId) {
-        case "rcs":
+        case "whatsapp": {
+          endpoint = "/messages-api/1/messages";
+
+          payload = {
+            messages: [
+              {
+                channel: "WHATSAPP",
+                sender: from || process.env["INFOBIP_WHATSAPP_FROM"],
+                destinations: recipients.map((r) => ({ to: r })),
+                content: {
+                  body: {
+                    type: "RICH_LINK",
+                    url: message.mediaUrl,
+                    text: message.title,
+                    redirectUrl: message.redirectUrl,
+                    isVideo: message.isVideo,
+                  },
+                },
+              }
+            ],
+          };
+          break;
+        }
+          
+        case "rcs": {
           endpoint = "/rcs/2/messages";
+
           payload = {
             messages: [
               {
                 sender: from || process.env["INFOBIP_RCS_FROM"],
-                destinations: [{ to }],
+                destinations: recipients.map((r) => ({ to: r })),
                 content: {
                   type: "CARD",
                   orientation: message.orientation,
@@ -30,12 +56,8 @@ export class InfobipCardHandler extends BaseHandler<CardMessage> {
                     title: message.title,
                     description: message.description,
                     media: {
-                      file: {
-                        url: message.mediaUrl,
-                      },
-                      thumbnail: {
-                        url: message.thumbnailUrl,
-                      },
+                      file: { url: message.mediaUrl },
+                      thumbnail: { url: message.thumbnailUrl },
                       height: message.height,
                     },
                   },
@@ -44,6 +66,7 @@ export class InfobipCardHandler extends BaseHandler<CardMessage> {
             ],
           };
           break;
+        }
 
         default:
           throw new Error(`Unsupported channel for card message: ${channelId}`);

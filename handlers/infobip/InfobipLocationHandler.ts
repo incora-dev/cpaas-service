@@ -7,27 +7,62 @@ export class InfobipLocationHandler extends BaseHandler<LocationMessage> {
   async send(
     message: LocationMessage,
     channelId: string,
-    to: string,
+    to: string | string[],
     from?: string
   ): Promise<void> {
     try {
+      const recipients = Array.isArray(to) ? to : [to];
       let endpoint: string;
       let payload: any;
 
       switch (channelId) {
-        case "whatsapp":
-          endpoint = "/whatsapp/1/message/location";
+        case "whatsapp": {
+          endpoint = "/messages-api/1/messages";
+
           payload = {
-            from: from || process.env["INFOBIP_WHATSAPP_FROM"],
-            to,
-            content: {
-              latitude: message.latitude,
-              longitude: message.longitude,
-              name: message.name,
-              address: message.address,
-            },
+            messages: [
+              {
+                channel: "WHATSAPP",
+                sender: from || process.env["INFOBIP_WHATSAPP_FROM"],
+                destinations: recipients.map((r) => ({ to: r })),
+                content: {
+                  body: {
+                    type: "LOCATION",
+                    latitude: message.latitude,
+                    longitude: message.longitude,
+                    name: message.name,
+                    address: message.address,
+                  },
+                },
+              },
+            ],
           };
           break;
+        }
+
+        case "viber": {
+          endpoint = "/messages-api/1/messages";
+
+          payload = {
+            messages: [
+              {
+                channel: "VIBER_BM",
+                sender: from || process.env["INFOBIP_VIBER_FROM"],
+                destinations: recipients.map((r) => ({ to: r })),
+                content: {
+                  body: {
+                    type: "LOCATION",
+                    latitude: message.latitude,
+                    longitude: message.longitude,
+                    name: message.name,
+                    address: message.address,
+                  },
+                },
+              },
+            ],
+          };
+          break;
+        }
 
         default:
           throw new Error(
@@ -35,15 +70,15 @@ export class InfobipLocationHandler extends BaseHandler<LocationMessage> {
           );
       }
 
-      const response = await this.client.post(endpoint, payload);
-      console.log(
-        `[${channelId}] Infobip location message sent successfully:`,
-        response.data
-      );
+       const response = await this.client.post(endpoint, payload);
+       console.log(
+         `[${channelId}] Infobip location message sent successfully:`,
+         response.data
+       );
     } catch (error: any) {
       console.error(
         `[${channelId}] Error sending Infobip location message:`,
-        error
+        error.response?.data || error
       );
       throw error;
     }

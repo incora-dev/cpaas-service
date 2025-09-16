@@ -4,6 +4,7 @@ export interface CarouselItem {
   title: string;
   description: string;
   mediaUrl: string;
+  thumbnailUrl?: string;
   buttons: Button[];
   height: "SHORT" | "MEDIUM" | "TALL";
 }
