@@ -89,7 +89,7 @@ export class InfobipCarouselHandler extends BaseHandler<CarouselMessage> {
     } catch (error: any) {
       console.error(
         `[${channelId}] Error sending Infobip carousel message:`,
-        error.response?.data || error
+        error?.response?.data || error
       );
       throw error;
     }

@@ -20,6 +20,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.0.0",
+    "@aws-sdk/lib-dynamodb": "^3.0.0",
     "aws-lambda": "^1.0.7",
     "axios": "^1.11.0",
     "body-parser": "^2.2.0",
